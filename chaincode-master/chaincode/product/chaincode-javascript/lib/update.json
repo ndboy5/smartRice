@@ -1,0 +1,37 @@
+{
+    "type": "object",
+    "required": [
+        "productId"
+    ],
+    "properties": {
+        "productId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "errorMessage": "Invalid productId"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "errorMessage":"Invalid name"
+        },
+        "quantity": {
+            "type": "integer",
+            "minimum": 0,
+            "errorMessage":"Invalid quantity"
+        },
+        "information": {
+            "type": "string",
+            "minLength": 1,
+            "errorMessage":"Invalid information"
+        }
+    },
+    "additionalProperties": false,
+    "minProperties": 2,
+    "errorMessage": {
+        "required": {
+            "productId": "productId is required"
+        }
+    }
+}

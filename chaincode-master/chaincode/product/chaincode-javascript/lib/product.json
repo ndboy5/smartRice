@@ -1,0 +1,47 @@
+{
+    "type": "object",
+    "required": [
+        "name",
+        "quantity",
+        "information"
+    ],
+    "properties": {
+        "manufactory": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "errorMessage":"Invalid manufactory"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "errorMessage":"Invalid name"
+        },
+        "quantity": {
+            "type": "integer",
+            "minimum": 0,
+            "errorMessage":"Invalid quantity"
+        },
+        "information": {
+            "type": "string",
+            "minLength": 1,
+            "errorMessage":"Invalid information"
+        },
+        "docType": {
+            "type": "string",
+            "const": "product",
+            "default": "product",
+            "errorMessage": "Invalid docType"
+        }
+    },
+    "additionalProperties": false,
+    "errorMessage": {
+        "required": {
+            "name": "name is required",
+            "quantity": "quantity is required",
+            "information": "information is required"
+        },
+        "additionalProperties": "only name, quantity and information are allowed"
+    }
+}

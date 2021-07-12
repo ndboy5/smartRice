@@ -1,0 +1,43 @@
+{
+    "type": "object",
+    "required": [
+        "userId"
+    ],
+    "properties": {
+        "userId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "errorMessage": "Invalid userId"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "errorMessage":"Invalid name"
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "errorMessage": "Invalid email"
+        },
+        "password": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "errorMessage": "Invalid password"
+        },
+        "userType": {
+            "type": "string",
+            "enum": ["retailer", "logistics", "manufactory"],
+            "errorMessage": "Invalid userType"
+        }
+    },
+    "additionalProperties": false,
+    "minProperties": 2,
+    "errorMessage": {
+        "required": {
+            "userId": "userId is required"
+        }
+    }
+}

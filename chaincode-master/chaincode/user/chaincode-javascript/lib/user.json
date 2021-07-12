@@ -1,0 +1,49 @@
+{
+    "type": "object",
+    "required": [
+        "name",
+        "email",
+        "password",
+        "userType"
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "errorMessage":"Invalid name"
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "errorMessage": "Invalid email"
+        },
+        "password": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "errorMessage": "Invalid password"
+        },
+        "userType": {
+            "type": "string",
+            "enum": ["retailer", "logistics", "manufactory"],
+            "errorMessage": "Invalid userType"
+        },
+        "docType": {
+            "type": "string",
+            "const": "user",
+            "default": "user",
+            "errorMessage": "Invalid docType"
+        }
+    },
+    "additionalProperties": false,
+    "errorMessage": {
+        "required": {
+            "name": "name is required",
+            "email": "email is required",
+            "password": "password is required",
+            "userType": "userType is required"
+        },
+        "additionalProperties": "only name, email, password and userType are allowed"
+    }
+}
