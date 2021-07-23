@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/welcome">
+
+    <fragment
+        android:id="@+id/welcome"
+        android:name="com.raidify.mobi.smartrice.screens.welcome"
+        android:label="welcome_fragment"
+        tools:layout="@layout/welcome_fragment" >
+        <action
+            android:id="@+id/action_welcome_to_registration"
+            app:destination="@id/registration" />
+        <action
+            android:id="@+id/action_welcome_to_trading"
+            app:destination="@id/trading" />
+        <action
+            android:id="@+id/action_welcome_to_check"
+            app:destination="@id/check" />
+        <action
+            android:id="@+id/action_welcome_to_add_rice"
+            app:destination="@id/add_rice" />
+        <action
+            android:id="@+id/action_welcome_to_inventory"
+            app:destination="@id/inventory" />
+    </fragment>
+    <fragment
+        android:id="@+id/trading"
+        android:name="com.raidify.mobi.smartrice.screens.trading"
+        android:label="trading_fragment"
+        tools:layout="@layout/trading_fragment" />
+    <fragment
+        android:id="@+id/check"
+        android:name="com.raidify.mobi.smartrice.screens.check"
+        android:label="check_fragment"
+        tools:layout="@layout/check_fragment" />
+    <fragment
+        android:id="@+id/registration"
+        android:name="com.raidify.mobi.smartrice.screens.registration"
+        android:label="registration_fragment"
+        tools:layout="@layout/registration_fragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.raidify.mobi.smartrice.screens.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/add_rice"
+        android:name="com.raidify.mobi.smartrice.screens.add_rice"
+        android:label="add_rice_fragment"
+        tools:layout="@layout/add_rice_fragment" />
+    <fragment
+        android:id="@+id/inventory"
+        android:name="com.raidify.mobi.smartrice.screens.inventory"
+        android:label="inventory_fragment"
+        tools:layout="@layout/inventory_fragment" />
+</navigation>
