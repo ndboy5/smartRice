@@ -18,9 +18,11 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.raidify.mobi.smartrice.R;
-import com.raidify.mobi.smartrice.model.Asset;
+import com.raidify.mobi.smartrice.model.RiceAsset;
+import com.raidify.mobi.smartrice.utils.Constants;
 
 import java.util.Date;
+import java.util.Random;
 
 public class add_rice extends Fragment {
 
@@ -33,7 +35,7 @@ public class add_rice extends Fragment {
     MaterialButton submitBtn;
 
     private AddRiceViewModel mViewModel;
-    private final Asset newrice = new Asset();
+    private final RiceAsset newrice = new RiceAsset();
 
     public static add_rice newInstance() {
         return new add_rice();
@@ -69,13 +71,17 @@ public class add_rice extends Fragment {
 
     }
 
-    private Asset getAssetDetails(){
+    private RiceAsset getAssetDetails(){
+
         long currentDate = new Date().getTime();
-        newrice.rice_id = "123456A";
+        // Let upper bound for randomly generated number be used
+        Random random = new Random();
+        newrice.rice_id = Constants.RICE_ID_PREFIX + String.valueOf(random.nextInt(Constants.RANDOM_NUM_UPPER_BOUND));
+
         newrice.source_id = "-";
-        newrice.quantity = Double.valueOf(100);
+        newrice.quantity = Double.valueOf(quantityText.getText().toString());
         newrice.owner = idText.getText().toString();
-        newrice.riceType = "Ofada";
+        newrice.riceType = getSelectedRiceType();
         newrice.last_owner="-";
         newrice.creation_date = currentDate;
         newrice.last_update_date = currentDate;
@@ -85,6 +91,23 @@ public class add_rice extends Fragment {
         newrice.farm_location = "221432";
 
         return this.newrice;
+    }
+
+    //Returns a string description for the rice the user selected on the UI
+    private String getSelectedRiceType() {
+        switch (this.typeRadioButton.getCheckedRadioButtonId()){
+            case R.id.ofadaRiceRBtn:
+                return "Ofada";
+            case R.id.long_grainRBtn:
+                return "Long Grain";
+            case R.id.brownRiceRBtn:
+                return "Brown Rice";
+            case R.id.short_grainRBtn:
+                return "Short Grain Rice";
+
+            default:
+                return "Unknown";
+        }
     }
 
     private boolean validatePhoneNo(){

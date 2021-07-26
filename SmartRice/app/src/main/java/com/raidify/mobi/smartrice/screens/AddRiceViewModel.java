@@ -6,20 +6,19 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.ViewModel;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.raidify.mobi.smartrice.model.Asset;
+import com.raidify.mobi.smartrice.model.RiceAsset;
 import com.raidify.mobi.smartrice.server.APIServerSingleton;
+import com.raidify.mobi.smartrice.utils.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AddRiceViewModel extends AndroidViewModel {
-    Asset newAsset = new Asset();
+    RiceAsset newAsset = new RiceAsset();
     private Context context;
 
     public AddRiceViewModel(@NonNull Application application) {
@@ -27,20 +26,20 @@ public class AddRiceViewModel extends AndroidViewModel {
         context = application;
     }
 
-    public void addNewAsset(Asset asset){
+    public void addNewAsset(RiceAsset asset){
         this.newAsset = asset;
-        sendAssetToServer(asset);
+        sendRiceToServer(asset);
     }
 
-    private void sendAssetToServer(Asset asset){
-        String url = APIServerSingleton.urlBase + APIServerSingleton.riceURI;
+    private void sendRiceToServer(RiceAsset asset){
+        String url = Constants.urlBase + Constants.riceURI;
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("ID", asset.rice_id);
             jsonObject.put("Source_ID", asset.source_id);
             jsonObject.put("Size", asset.quantity);
             jsonObject.put("Owner", asset.owner);
-            jsonObject.put("Type", asset.riceType);
+            jsonObject.put("Rice_Type", asset.riceType);
             jsonObject.put("Creation_date", asset.creation_date);
             jsonObject.put("Last_update_date", asset.last_update_date);
             jsonObject.put("Batch_name", asset.batchName);
@@ -51,7 +50,7 @@ public class AddRiceViewModel extends AndroidViewModel {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.ACTION_POST, url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -62,10 +61,9 @@ public class AddRiceViewModel extends AndroidViewModel {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("ndboy", "SERVER ERROR: " + error.toString());
-
                     }
                 });
-
+        //add request to the request queue
         APIServerSingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
 }
 

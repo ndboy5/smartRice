@@ -29,7 +29,6 @@ public class check extends Fragment {
     public static check newInstance() {
         return new check();
     }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

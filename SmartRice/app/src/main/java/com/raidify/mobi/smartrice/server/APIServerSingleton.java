@@ -1,12 +1,10 @@
 package com.raidify.mobi.smartrice.server;
 
-
 import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-
 
 /*  This class uses volley to manage communication with the Rest API Server.
     It is a Singleton class
@@ -17,20 +15,6 @@ public class APIServerSingleton {
     private static APIServerSingleton instance;
     private RequestQueue requestQueue;
     private static Context ctx;
-
-    //use final variable for the Volley actions
-    public static final int ACTION_GET = Request.Method.GET;
-    public static final int ACTION_POST = Request.Method.POST;
-    public static final int ACTION_PATCH = Request.Method.PATCH;
-    public static final int ACTION_PUT = Request.Method.PUT;
-    public static final int ACTON_DELETE = Request.Method.DELETE;
-
-    // variables for building URLs
-    public static final int port = 5000;
-    public static final String urlBase = "http://172.20.10.4:" + Integer.toString(port) +"/api/v1/";
-    public static final String accountURI = "accounts/";
-    public static final String riceURI = "rice";
-    public static final String checkURI = "check";
 
     //private constructor for singleton instance
     private APIServerSingleton(Context context) {

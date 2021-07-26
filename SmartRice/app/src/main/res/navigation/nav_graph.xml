@@ -11,9 +11,6 @@
         android:label="welcome_fragment"
         tools:layout="@layout/welcome_fragment" >
         <action
-            android:id="@+id/action_welcome_to_registration"
-            app:destination="@id/registration" />
-        <action
             android:id="@+id/action_welcome_to_trading"
             app:destination="@id/trading" />
         <action
@@ -25,6 +22,9 @@
         <action
             android:id="@+id/action_welcome_to_inventory"
             app:destination="@id/inventory" />
+        <action
+            android:id="@+id/action_welcome_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/trading"
@@ -40,12 +40,20 @@
         android:id="@+id/registration"
         android:name="com.raidify.mobi.smartrice.screens.registration"
         android:label="registration_fragment"
-        tools:layout="@layout/registration_fragment" />
+        tools:layout="@layout/registration_fragment" >
+        <action
+            android:id="@+id/action_registration_to_welcome"
+            app:destination="@id/welcome" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.raidify.mobi.smartrice.screens.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registration"
+            app:destination="@id/registration" />
+    </fragment>
     <fragment
         android:id="@+id/add_rice"
         android:name="com.raidify.mobi.smartrice.screens.add_rice"
