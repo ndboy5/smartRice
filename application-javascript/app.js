@@ -1,3 +1,8 @@
+/**
+ * This script is used to setup the connection to the block chain 
+ * It should be ran after setting up the block chain network
+ * t should be only ran once before running the server.js file
+ */
 'use strict';
 
 const { Gateway, Wallets } = require('fabric-network');
@@ -75,40 +80,30 @@ async function main() {
 			// This will be sent to both peers and if both peers endorse the transaction, the endorsed proposal will be sent
 			// to the orderer to be committed by each of the peer's to the channel ledger.
 			console.log('\n--> Submit Transaction: CreateAsset, creates new asset with id, source_id, size, owner, rice_type, lastOwner, creation_date, transaction_date, hist, state, status,batch_name, farm_locationID, color, owner, size, and appraisedValue arguments');
-			result = await contract.submitTransaction('CreateAsset', 'asset13', 'asset1', 'Tom', 'Brown Rice', 'Nduka Okengwu', 123456, 123456,'-', 'Storage', 'Good' , 'Batch A', 586767);
+			result = await contract.submitTransaction('CreateAsset', 'RCE7','-', '40', 'Tom', 'Brown Rice', 'Nduka Okengwu', '123456', '123456','Storage', 'Good' , 'Batch A', '586767');
 			console.log('*** Result: committed');
 			if (`${result}` !== '') {
 				console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 			}
 
 			console.log('\n--> Evaluate Transaction: ReadAsset, function returns an asset with a given assetID');
-			result = await contract.evaluateTransaction('ReadAsset', 'asset13');
+			result = await contract.evaluateTransaction('ReadAsset', 'RCE1');
 			console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
 			console.log('\n--> Evaluate Transaction: AssetExists, function returns "true" if an asset with given assetID exist');
-			result = await contract.evaluateTransaction('AssetExists', 'asset1');
+			result = await contract.evaluateTransaction('AssetExists', 'RCE1');
 			console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
 			console.log('\n--> Submit Transaction: UpdateAsset asset1, change the appraisedValue to 350');
-			await contract.submitTransaction('UpdateAsset', 'asset1', '5', 'Tomoko', 'Kachi Okengwu', 'processing');
+			await contract.submitTransaction('UpdateAsset', 'RCE1', '5', 'Tomoko', 'Kachi Okengwu', 'processing');
 			console.log('*** Result: committed');
 
 			console.log('\n--> Evaluate Transaction: ReadAsset, function returns "asset1" attributes');
-			result = await contract.evaluateTransaction('ReadAsset', 'asset1');
+			result = await contract.evaluateTransaction('ReadAsset', 'RCE1');
 			console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-			try {
-				// How about we try a transactions where the executing chaincode throws an error
-				// Notice how the submitTransaction will throw an error containing the error thrown by the chaincode
-				console.log('\n--> Submit Transaction: UpdateAsset asset70, asset70 does not exist and should return an error');
-				await contract.submitTransaction('UpdateAsset', 'asset70', '5', 'Tomoko', 'Nduka Okengw', 988747, 'asset1','harvested');
-				console.log('******** FAILED to return an error');
-			} catch (error) {
-				console.log(`*** Successfully caught the error: \n    ${error}`);
-			}
-
-			console.log('\n--> Submit Transaction: TransferAsset asset1, transfer to new owner of Tom');
-			await contract.submitTransaction('TransferAsset', 'asset1', 'Tom');
+			console.log('\n--> Submit Transaction: TransferAsset function RCE2, transfer to new owner Ifeanyichukwu');
+			await contract.submitTransaction('TransferAsset', 'RCE2', 'Ifenyichukwu');
 			console.log('*** Result: committed');
 
 			console.log('\n--> Evaluate Transaction: ReadAsset, function returns "asset1" attributes');

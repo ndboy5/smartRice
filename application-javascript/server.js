@@ -29,14 +29,6 @@ const ccp = buildCCPOrg1();
 app.get('/api/v1/rice', async (req, res)=>{
     try{
  		const wallet = await buildWallet(Wallets, walletPath);
-
-/* Code to verify appliction user
-        if (!identity) {
-            console.log('An identity for the user "appUser" does not exist in the wallet');
-            console.log('Run the registerUser.js application before retrying');
-            return;
-        }
-*/
         const gateway = new Gateway();
             
 			await gateway.connect(ccp, {
@@ -51,7 +43,11 @@ app.get('/api/v1/rice', async (req, res)=>{
 			// Get the contract from the network.
 			const contract = network.getContract(chaincodeName);
     let result = await contract.evaluateTransaction('GetAllAssets');
-    res.status(200).json({success:true, data: JSON.parse(result.toString()) }); //Same cases may require that the JSON data be parsed twice
+	//filter assets to get only rice assets
+	result = JSON.parse(result.toString()).filter(rice =>{
+		rice.ID.substring(0,2)=="RCE";
+	})
+    res.status(200).json({success:true, data: result }); //Same cases may require that the JSON data be parsed twice
     }
     catch(error){
         console.log(`Get rice Contract Error: ${error}` )
@@ -60,7 +56,6 @@ app.get('/api/v1/rice', async (req, res)=>{
 
 //Posts a new asset from client to the block chain
 app.post('/api/v1/rice', async (req, res)=>{
-    let rice = req.body;
     try{
  		const wallet = await buildWallet(Wallets, walletPath);
 
@@ -75,10 +70,42 @@ app.post('/api/v1/rice', async (req, res)=>{
 			// Build a network instance based on the channel where the smart contract is deployed
 			const network = await gateway.getNetwork(channelName);
 
+    		const rice = req.body;
+    		// const rice = JSON.parse(req.body);
+			console.log(rice);
 			// Get the contract from the network.
 			const contract = network.getContract(chaincodeName);
-			let result = await contract.submitTransaction('CreateAsset', rice.ID, rice.Size, rice.Owner, rice.Last_owner, rice.Transaction_date, rice.Hist); //Remember to change this to accept 7 parameters
-    res.status(200).json({success:true, msg: "submitted succesfully" });
+
+			const result = await contract.submitTransaction('CreateAsset', ''+ rice.ID, ''+ rice.Source_ID, 
+							''+ rice.Size, ''+ rice.Owner, ''+ rice.Rice_Type,''+ rice.Last_owner, ''+ rice.Creation_date, 
+							''+ rice.Last_update_date, ''+ rice.Hist, ''+ rice.Batch_name,''+ rice.State,
+							''+ rice.Status, ''+ rice.Farm_location); 
+    res.status(200).json({success:true, msg: "submitted succesfully: " + JSON.parse(result.toString()) });
+    }
+    catch(error){
+        console.log(`Get rice Contract Error: ${error}` )
+    }
+});
+// Post new account to the blockchain
+app.post('/api/v1/account', async (req, res)=>{
+    try{
+ 		const wallet = await buildWallet(Wallets, walletPath);
+        const gateway = new Gateway();
+			await gateway.connect(ccp, {
+				wallet,
+				identity: org1UserId,
+				discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+			});
+
+			// Build a network instance based on the channel where the smart contract is deployed
+			const network = await gateway.getNetwork(channelName);
+    		const account = req.body;
+			// Get the contract from the network.
+			const contract = network.getContract(chaincodeName);
+			const result = await contract.submitTransaction('CreateAccount', ''+ account.ID, ''+ account.Name, 
+							''+ account.Midname, ''+account.Surname, ''+ account.Role, ''+account.Pass_phrase,
+							''+account.Location, ''+account.Creation_date); 
+    res.status(200).json({success:true, msg: "submitted succesfully: " + result });
     }
     catch(error){
         console.log(`Get rice Contract Error: ${error}` )

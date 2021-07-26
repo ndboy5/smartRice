@@ -8,11 +8,11 @@ class AssetTransfer extends Contract {
     async InitLedger(ctx) {
         const assets = [
             {
-                ID: 'asset1',
-                Size: 5,
-                Owner: 'Tochukwu Okengwu',
-            Type: "Ofada",
+            ID: 'RCE1',
             Source_ID:'-',
+            Size: 5,
+            Owner: 'Tochukwu Okengwu',
+            Rice_Type: "Ofada",
             Last_owner: "",
             Creation_date: 78998977,
             Last_update_date:78998977,
@@ -23,11 +23,11 @@ class AssetTransfer extends Contract {
             Farm_location: 9999898,
             },
             {
-                ID: 'asset2',
+                ID: 'RCE2',
                 Size: 5,
                 Owner: 'Garba Sule',
             Last_owner: "Tochukwu Okengwu",
-             Type: "Ofada",
+             Rice_Type: "Ofada",
             Source_ID:'-',
             Creation_date: 78998977,
             Last_update_date:34253543,
@@ -38,11 +38,11 @@ class AssetTransfer extends Contract {
             Farm_location: 9999898,
             },
             {
-                ID: 'asset3',
+                ID: 'RCE3',
                 Size: 10,
                 Owner: 'Garba Sule',
             Last_owner: "Jerry Gana",
-             Type: "Ofada",
+             Rice_Type: "Ofada",
             Source_ID:'-',
             Creation_date: 78998977,
             Last_update_date:37256773,
@@ -53,11 +53,11 @@ class AssetTransfer extends Contract {
             Farm_location: 9999898,
             },
             {
-                ID: 'asset4',
+                ID: 'RCE4',
                 Size: 10,
                 Owner: 'Max',
             Last_owner: "Garba Babayaro",
-             Type: "Ofada",
+             Rice_Type: "Ofada",
             Source_ID:'-',
             Creation_date: 78998977,
             Last_update_date:324655656,
@@ -68,11 +68,11 @@ class AssetTransfer extends Contract {
             Farm_location: 9999898,
             },
             {
-                ID: 'asset5',
+                ID: 'RCE5',
                 Size: 15,
                 Owner: 'Adriana',
             Last_owner: "Tochukwu Okengwu",
-             Type: "Ofada",
+             Rice_Type: "Ofada",
             Source_ID:'-',
             Creation_date: 68998977,
             Last_update_date:34253485,
@@ -83,11 +83,11 @@ class AssetTransfer extends Contract {
             Farm_location: 9999898,
             },
             {
-                ID: 'asset6',
+                ID: 'RCE6',
                 Size: 15,
                 Owner: 'Tunde',
             Last_owner: "Ariochi Okengwu",
-             Type: "Ofada",
+             Rice_Type: "Ofada",
             Source_ID:'-',
             Creation_date: 38995977,
             Last_update_date:38995977,
@@ -114,7 +114,7 @@ class AssetTransfer extends Contract {
             Source_ID: source_id,
             Size: size, //The size of rice in kilogrames
             Owner: owner,
-            Type: rice_type,
+            Rice_Type: rice_type,
             Last_owner: lastOwner,
             Creation_date: creation_date,
             Last_update_date:transaction_date,
@@ -128,6 +128,15 @@ class AssetTransfer extends Contract {
         return JSON.stringify(asset);
     }
 
+    // Create new Account 
+    async CreateAccount(ctx, id,name, midname, surname, role,pass_phrase, location, creation_date) {
+        const asset = {
+            ID: id, Name:name, Midname:midname, Surname: surname, Role: role, 
+            Pass_phrase: pass_phrase, Location:location, Creation_date: creation_date };
+        ctx.stub.putState(id, Buffer.from(JSON.stringify(asset)));
+        return JSON.stringify(asset);
+    }
+
     // ReadAsset returns the asset stored in the world state with given id.
     async ReadAsset(ctx, id) {
         const assetJSON = await ctx.stub.getState(id); // get the asset from chaincode state
@@ -137,13 +146,12 @@ class AssetTransfer extends Contract {
         return assetJSON.toString();
     }
 
-    // UpdateAsset updates an existing asset in the world state with provided parameters.
+    // UpdateAsset updates an existing rice asset in the world state with provided parameters.
     async UpdateAsset(ctx, id, size, owner, lastOwner, transaction_date, hist , state) {
         const exists = await this.AssetExists(ctx, id);
         if (!exists) {
             throw new Error(`The asset ${id} does not exist`);
         }
-
         // overwriting original asset with new asset
         const updatedAsset = {
             ID: id,
@@ -181,7 +189,8 @@ class AssetTransfer extends Contract {
         return ctx.stub.putState(id, Buffer.from(JSON.stringify(asset)));
     }
 
-    // GetAllAssets returns all assets found in the world state.
+    // GetAllAssets returns all assets found in the world state of the hyper ledger.
+    //Indexes on the ID are used to identify the type of Asset it belongs to
     async GetAllAssets(ctx) {
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all assets in the chaincode namespace.
