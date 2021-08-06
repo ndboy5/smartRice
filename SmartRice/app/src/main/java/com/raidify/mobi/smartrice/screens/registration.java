@@ -7,11 +7,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -22,9 +27,12 @@ import com.raidify.mobi.smartrice.model.AccountAsset;
 import com.raidify.mobi.smartrice.utils.Constants;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.PriorityQueue;
 import java.util.Random;
+import java.util.Set;
 
-public class registration extends Fragment implements View.OnClickListener {
+public class registration extends Fragment {
 
     //UI components
     private TextInputEditText accountIDEditText;
@@ -34,25 +42,19 @@ public class registration extends Fragment implements View.OnClickListener {
     private RadioGroup roleGroup;
     private ChipGroup passPhraseChipGroup;
     private MaterialButton saveProfileBtn;
-
+    private TextView passPhraseText;
 
     //UI chips
-    Chip chip0;
-    Chip chip1;
-    Chip chip2;
-    Chip chip3;
-    Chip chip4;
-    Chip chip5;
-    Chip chip6;
-    Chip chip7;
-    Chip chip8;
-    Chip chip9;
+    Chip chip0; Chip chip1; Chip chip2; Chip chip3; Chip chip4;
+    Chip chip5; Chip chip6; Chip chip7; Chip chip8; Chip chip9;
 
     AccountAsset newAccount = new AccountAsset();
     private RegistrationViewModel mViewModel;
-    private boolean[] passPhraseIndex = new boolean[10];
+
+    Set<String> passPhraseSet = new HashSet<String>();
     private String[] passPhraseString = new String[] {"School", "Computer","Garri", "Oshodi", "Yam", "Tractor",
-                                                        "Cutlass", "Effurun", "Graduate", "Mature"};
+                                                        "Cutlass", "Effurun", "Basket", "Mature"};
+    String phrase = "";
     public static registration newInstance() {
         return new registration();
     }
@@ -71,6 +73,7 @@ public class registration extends Fragment implements View.OnClickListener {
         nameEditText = getView().findViewById(R.id.nameMText);
         surnameEditText = getView().findViewById(R.id.surnameMText);
         midnameEditText = getView().findViewById(R.id.otherNameMText);
+        passPhraseText = getView().findViewById(R.id.passPhraseText);
        chip0 = getView().findViewById(R.id.chip0);
         chip1 = getView().findViewById(R.id.chip1);
         chip2 = getView().findViewById(R.id.chip2);
@@ -82,53 +85,99 @@ public class registration extends Fragment implements View.OnClickListener {
         chip8 = getView().findViewById(R.id.chip8);
         chip9 = getView().findViewById(R.id.chip9);
         saveProfileBtn = getView().findViewById(R.id.saveProfileBtn);
+        roleGroup = getView().findViewById(R.id.roleRadioGroup);
 
         saveProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             setAccountAssetDetails();
-            //Send to blockchain
+            //validate data and send to blockchain
+                if(isValidEntry()) {
+                    mViewModel.sendAccountDetailsToNetwork(newAccount);
+                    Toast.makeText(getContext(), "Your new account ID is : " + newAccount.ID +
+                            " and your pass phrase: " + phrase, Toast.LENGTH_LONG );
+                    Navigation.findNavController(getView()).navigate(R.id.action_registration_to_welcome);
+                } else {
+                    Toast.makeText(getContext(), "Kindly enter the fields correctly", Toast.LENGTH_SHORT);
+                }
+
             }
         });
 
         //Set listeners for all chips
-        chip0.setOnClickListener(this);
-        chip1.setOnClickListener(this);
-        chip2.setOnClickListener(this);
-        chip3.setOnClickListener(this);
-        chip4.setOnClickListener(this);
-        chip5.setOnClickListener(this);
-        chip6.setOnClickListener(this);
-        chip7.setOnClickListener(this);
-        chip8.setOnClickListener(this);
-        chip9.setOnClickListener(this);
-    }
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.chip0:
-                passPhraseIndex[0] = !passPhraseIndex[0];
-            case R.id.chip1:
-                passPhraseIndex[1] = !passPhraseIndex[1];
-            case R.id.chip2:
-                passPhraseIndex[2] = !passPhraseIndex[2];
-            case R.id.chip3:
-                passPhraseIndex[3] = !passPhraseIndex[3];
-            case R.id.chip4:
-                passPhraseIndex[4] = !passPhraseIndex[4];
-            case R.id.chip5:
-                passPhraseIndex[5] = !passPhraseIndex[5];
-            case R.id.chip6:
-                passPhraseIndex[6] = !passPhraseIndex[6];
-            case R.id.chip7:
-                passPhraseIndex[7] = !passPhraseIndex[7];
-            case R.id.chip8:
-                passPhraseIndex[8] = !passPhraseIndex[8];
-            case R.id.chip9:
-                passPhraseIndex[9] = !passPhraseIndex[9];
-        }
-    }
+        chip0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computePassPhraseEntry(passPhraseString[0]);
+            }
+        });
 
+        chip1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computePassPhraseEntry(passPhraseString[1]);
+            }
+        });
+
+        chip2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computePassPhraseEntry(passPhraseString[2]);
+            }
+        });
+
+        chip3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computePassPhraseEntry(passPhraseString[3]);
+            }
+        });
+
+        chip4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computePassPhraseEntry(passPhraseString[4]);
+            }
+        });
+
+        chip5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computePassPhraseEntry(passPhraseString[5]);
+            }
+        });
+
+        chip6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computePassPhraseEntry(passPhraseString[6]);
+            }
+        });
+
+        chip7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computePassPhraseEntry(passPhraseString[7]);
+            }
+        });
+
+        chip8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computePassPhraseEntry(passPhraseString[8]);
+            }
+        });
+
+        chip9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                computePassPhraseEntry(passPhraseString[9]);
+            }
+        });
+
+    }
+//
     private AccountAsset setAccountAssetDetails(){
         newAccount.ID = getSelectedRole() + accountIDEditText.getText();
         newAccount.firstName=nameEditText.getText().toString();
@@ -138,16 +187,23 @@ public class registration extends Fragment implements View.OnClickListener {
         newAccount.location = "324125451";
         newAccount.pass_phrase = computePassPhrase();
         newAccount.role = getSelectedRole();
-
         return this.newAccount;
     }
 
     private String computePassPhrase(){
-        String phrase = "";
-        for (int i = 0; i <passPhraseIndex.length ; i++) {
-                if(passPhraseIndex[i]) phrase = phrase + passPhraseString[i];
+        for (String word: passPhraseSet){
+            this.phrase = this.phrase + word;
         }
-        return phrase;
+        Log.i("ndboy", phrase);
+        return this.phrase;
+    }
+
+    private void computePassPhraseEntry(String word){
+        if (passPhraseSet.contains(word) ) {
+            passPhraseSet.remove(word);
+        } else passPhraseSet.add(word);
+        passPhraseText.setText("Pass Phrase: " + computePassPhrase());
+
     }
 
 
@@ -165,5 +221,25 @@ public class registration extends Fragment implements View.OnClickListener {
                 return Constants.CONSUMER_ID_PREFIX;
         }
         return "Unknown";
+    }
+
+    private boolean isValidEntry() {
+        //Check for phone number string length
+        int phoneNoLength = accountIDEditText.getText().toString().length();
+        if (phoneNoLength < 11 || phoneNoLength >= 16) {
+            Toast.makeText(getContext(), "Kindly enter a valid phone number", Toast.LENGTH_SHORT);
+            return false;
+        }
+        if (nameEditText.getText().toString().length() < 1 || surnameEditText.getText().toString().length() < 1) {
+
+            Toast.makeText(getContext(), "Kindly enter a valid name and surname", Toast.LENGTH_SHORT);
+            return false;
+        }
+        //Validate the pass phrase
+       if(this.phrase.length()<3){
+           Toast.makeText(getContext(), "Kindly choose and note your pass-phrase", Toast.LENGTH_SHORT);
+           return false;
+       }
+        return true;
     }
 }

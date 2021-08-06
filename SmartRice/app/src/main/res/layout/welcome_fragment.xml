@@ -96,7 +96,7 @@
                     android:layout_height="match_parent"
                     android:contentDescription="shop for rice"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@mipmap/ic_shop_rice" />
+                    app:srcCompat="@mipmap/ic_trade_rice" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -154,7 +154,7 @@
                     android:layout_height="match_parent"
                     android:contentDescription="add newly harvested rice"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@mipmap/ic_new_rice" />
+                    app:srcCompat="@mipmap/ic_shop_rice" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -202,7 +202,7 @@
                     android:layout_height="match_parent"
                     android:contentDescription="see rice history"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@mipmap/ic_new_rice" />
+                    app:srcCompat="@mipmap/ic_track_rice" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

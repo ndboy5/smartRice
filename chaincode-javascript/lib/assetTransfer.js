@@ -1,10 +1,15 @@
-
+/**
+ * The Asset Transfer Class 
+ * Purpose: Uses the fabric-contract-api to execute Account and Rice Asset transactions
+ * Author: Ifeanyichukwu Deborah Okengwu
+ * Date: July 15th 2021
+ */
 'use strict';
 
 const { Contract } = require('fabric-contract-api');
 
 class AssetTransfer extends Contract {
-
+//Sample rice data for code testing
     async InitLedger(ctx) {
         const assets = [
             {
@@ -21,7 +26,11 @@ class AssetTransfer extends Contract {
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
             Farm_location: 9999898,
+            Transaction_Status:'open',
+            Unit_Price: '100'
             },
+            {ID: 'FMR09000000000', Name:'Frank', Midname:'', Surname: 'Olize', Role: 'FMR', 
+            Pass_phrase: 'SchoolGarri', Location:14323423, Creation_date: 23142441 },
             {
                 ID: 'RCE2',
                 Size: 5,
@@ -36,13 +45,15 @@ class AssetTransfer extends Contract {
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
             Farm_location: 9999898,
+            Transaction_Status:'open',
+            Unit_Price: '100'
             },
             {
                 ID: 'RCE3',
                 Size: 10,
                 Owner: 'Garba Sule',
             Last_owner: "Jerry Gana",
-             Rice_Type: "Ofada",
+             Rice_Type: "Long Grain",
             Source_ID:'-',
             Creation_date: 78998977,
             Last_update_date:37256773,
@@ -51,6 +62,8 @@ class AssetTransfer extends Contract {
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
             Farm_location: 9999898,
+            Transaction_Status:'open',
+            Unit_Price: '150'
             },
             {
                 ID: 'RCE4',
@@ -66,13 +79,15 @@ class AssetTransfer extends Contract {
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
             Farm_location: 9999898,
+            Transaction_Status:'open',
+            Unit_Price: ''
             },
             {
                 ID: 'RCE5',
                 Size: 15,
                 Owner: 'Adriana',
             Last_owner: "Tochukwu Okengwu",
-             Rice_Type: "Ofada",
+             Rice_Type: "Brown Rice",
             Source_ID:'-',
             Creation_date: 68998977,
             Last_update_date:34253485,
@@ -81,6 +96,8 @@ class AssetTransfer extends Contract {
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
             Farm_location: 9999898,
+            Transaction_Status:'open',
+            Unit_Price: '120'
             },
             {
                 ID: 'RCE6',
@@ -96,6 +113,8 @@ class AssetTransfer extends Contract {
             State: 'processed',
             Status:'Expired', //Expired, fresh ,Good etc
             Farm_location: 9999898,
+            Transaction_Status:'open',
+            Unit_Price: '100'
             },
         ];
 
@@ -106,9 +125,9 @@ class AssetTransfer extends Contract {
         }
     }
 
-    // CreateAsset issues a new asset to the world state with given details.
+    // CreateAsset issues a new rice asset to the world state with given details of the harvested crop
     async CreateAsset(ctx, id, source_id, size, owner, rice_type, lastOwner, creation_date, transaction_date, 
-                        hist, state, status,batch_name, farm_location) {
+                        hist, state, status,batch_name, farm_location, trans_status, unit_price) {
         const asset = {
             ID: id,
             Source_ID: source_id,
@@ -120,9 +139,11 @@ class AssetTransfer extends Contract {
             Last_update_date:transaction_date,
             Hist: hist, 
             Batch_name: batch_name,
-            State: state, //Harvested, Processing, Consumed etc
+            State: state, //Harvested, Processing, Storage, Consumed etc
             Status:status, //Expired, fresh ,Good etc
             Farm_location: farm_location,
+            Transaction_Status: trans_status, //The possible transaction statuses are "open", "pending", "closed"
+            Unit_Price: unit_price
         };
         ctx.stub.putState(id, Buffer.from(JSON.stringify(asset)));
         return JSON.stringify(asset);
@@ -146,22 +167,23 @@ class AssetTransfer extends Contract {
         return assetJSON.toString();
     }
 
-    // UpdateAsset updates an existing rice asset in the world state with provided parameters.
-    async UpdateAsset(ctx, id, size, owner, lastOwner, transaction_date, hist , state) {
+    /**
+     * Asset Trading transactions - Consumption, Trading
+     * UpdateAsset updates an existing rice asset in the world state with provided parameters.
+     * */
+    async UpdateAsset(ctx, id, source_id, size, owner, rice_type, lastOwner, creation_date, transaction_date, 
+                        hist, state, status,batch_name, farm_location, trans_status, unit_price ) {
         const exists = await this.AssetExists(ctx, id);
         if (!exists) {
             throw new Error(`The asset ${id} does not exist`);
         }
         // overwriting original asset with new asset
         const updatedAsset = {
-            ID: id,
-            Size: size,
-            Owner: owner,
-            Last_owner: lastOwner,
-            Last_update_date:transaction_date,
-            Hist: hist, 
-            State: state,
-
+            ID: id,Source_ID: source_id, Size: size, Owner: owner,
+            Rice_Type: rice_type, Last_owner: lastOwner,Creation_date: creation_date,
+            Last_update_date:transaction_date,Hist: hist, Batch_name: batch_name,
+            State: state, Status:status, Farm_location: farm_location, Transaction_Status: trans_status, 
+            Unit_Price: unit_price
         };
         return ctx.stub.putState(id, Buffer.from(JSON.stringify(updatedAsset)));
     }
@@ -182,10 +204,21 @@ class AssetTransfer extends Contract {
     }
 
     // TransferAsset updates the owner field of asset with given id in the world state.
-    async TransferAsset(ctx, id, newOwner) {
+    async TransferAsset(ctx, id, newOwner, lastOwner, updateDate) {
         const assetString = await this.ReadAsset(ctx, id);
         const asset = JSON.parse(assetString);
         asset.Owner = newOwner;
+        asset.Last_owner = lastOwner;
+        asset.Last_update_date = updateDate;
+        return ctx.stub.putState(id, Buffer.from(JSON.stringify(asset)));
+    }
+
+    // To change Rice asset transactions status for release, sale or buy
+    async AssetTradeTransactionUpdate(ctx, id, trans_status, updateDate) {
+        const assetString = await this.ReadAsset(ctx, id);
+        const asset = JSON.parse(assetString);
+        asset.Transaction_Status = trans_status;
+        asset.Last_update_date = updateDate;
         return ctx.stub.putState(id, Buffer.from(JSON.stringify(asset)));
     }
 
@@ -195,6 +228,28 @@ class AssetTransfer extends Contract {
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all assets in the chaincode namespace.
         const iterator = await ctx.stub.getStateByRange('', '');
+        let result = await iterator.next();
+        while (!result.done) {
+            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+            let record;
+            try {
+                record = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                record = strValue;
+            }
+            allResults.push({ Key: result.value.key, Record: record });
+            result = await iterator.next();
+        }
+        return JSON.stringify(allResults);
+    }
+
+    //Get the history of changes to an asset
+    async GetAssetHistory(ctx, id) {
+        const allResults = [];
+        // TODO: Test efficacy of this function
+      //  const iterator = await ctx.stub.GetAssetHistory(id);
+        const iterator = await ctx.stub.getHistoryForKey(id);
         let result = await iterator.next();
         while (!result.done) {
             const strValue = Buffer.from(result.value.value.toString()).toString('utf8');

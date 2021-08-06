@@ -1,0 +1,156 @@
+/**
+ * The Asset Transfer Class 
+ * Purpose: Uses the fabric-contract-api to execute Account and Rice Asset transactions
+ * Author: Ifeanyichukwu Deborah Okengwu
+ * Date: July 10th 2021
+ */
+'use strict';
+
+const { Contract } = require('fabric-contract-api');
+
+class AssetTransfer extends Contract {
+//Sampled Data used to initialize Blockchain
+    async InitLedger(ctx) {
+        const assets = [
+            {
+            ID: 'RCE1', Source_ID:'-', Size: 5,
+            Owner: 'Tochukwu Okengwu', Rice_Type: "Ofada",
+            Last_owner: "", Creation_date: 78998977,
+            Last_update_date:78998977, Hist: '', 
+            Batch_name: 'Batch A', State: 'harvested',
+            Status:'Fresh', //Expired, fresh ,Good etc
+            Farm_location: 9999898,Transaction_Status:'open', Unit_Price: ''
+            },
+            {
+                ID: 'RCE2', Size: 5, Owner: 'Garba Sule',
+            Last_owner: "Tochukwu Okengwu", Rice_Type: "Ofada",
+            Source_ID:'-', Creation_date: 78998977,
+            Last_update_date:34253543, Hist: '', Batch_name: 'Batch B',
+            State: 'harvested', Status:'Fresh', //Expired, fresh ,Good etc
+            Farm_location: 9999898,Transaction_Status:'open', Unit_Price: ''
+            }
+        ];
+
+        for (const asset of assets) {
+            asset.docType = 'asset';
+            await ctx.stub.putState(asset.ID, Buffer.from(JSON.stringify(asset)));
+            console.info(`Asset ${asset.ID} initialized`);
+        }
+    }
+
+    /**
+     * Harvest: CreateAsset issues a new rice asset to the world state with given details of the harvested crop
+     * It can only be executed by a farmer in his Rice Farm
+     */
+    async CreateAsset(ctx, id, source_id, size, owner, rice_type, lastOwner, creation_date, transaction_date, 
+                        hist, state, status,batch_name, farm_location, trans_status, unit_price) {
+        const asset = {
+            ID: id,
+            Source_ID: source_id,
+            Size: size, //The size of rice in kilogrames
+            Owner: owner, Rice_Type: rice_type,
+            Last_owner: lastOwner, Creation_date: creation_date,
+            Last_update_date:transaction_date,
+            Hist: hist, Batch_name: batch_name,
+            State: state, //Harvested, Processing, Storage, Consumed etc
+            Status:status, //Expired, fresh ,Good etc
+            Farm_location: farm_location,
+            Transaction_Status: trans_status, //The possible transaction statuses are "open", "pending", "closed"
+            Unit_Price: unit_price
+        };
+        ctx.stub.putState(id, Buffer.from(JSON.stringify(asset)));
+        return JSON.stringify(asset);
+    }
+
+    // Create new Account 
+    async CreateAccount(ctx, id,name, midname, surname, role,pass_phrase, location, creation_date) {
+        const asset = {
+            ID: id, Name:name, Midname:midname, Surname: surname, Role: role, 
+            Pass_phrase: pass_phrase, Location:location, Creation_date: creation_date };
+        ctx.stub.putState(id, Buffer.from(JSON.stringify(asset)));
+        return JSON.stringify(asset);
+    }
+
+    // ReadAsset returns the asset stored in the world state with given id.
+    async ReadAsset(ctx, id) {
+        const assetJSON = await ctx.stub.getState(id); // get the asset from chaincode state
+        if (!assetJSON || assetJSON.length === 0) {
+            throw new Error(`The asset ${id} does not exist`);
+        }
+        return assetJSON.toString();
+    }
+
+    /**
+     * Asset Trading transactions - Consumption, Trading
+     * UpdateAsset updates an existing rice asset in the world state with provided parameters.
+     * */
+    async UpdateAsset(ctx, id, source_id, size, owner, rice_type, lastOwner, creation_date, transaction_date, 
+                        hist, state, status,batch_name, farm_location, trans_status, unit_price ) {
+        const exists = await this.AssetExists(ctx, id);
+        if (!exists) {
+            throw new Error(`The asset ${id} does not exist`);
+        }
+        // overwriting original asset with new asset
+        const updatedAsset = {
+            ID: id,Source_ID: source_id, Size: size, Owner: owner,
+            Rice_Type: rice_type, Last_owner: lastOwner,Creation_date: creation_date,
+            Last_update_date:transaction_date,Hist: hist, Batch_name: batch_name,
+            State: state, Status:status, Farm_location: farm_location, Transaction_Status: trans_status, 
+            Unit_Price: unit_price
+
+        };
+        return ctx.stub.putState(id, Buffer.from(JSON.stringify(updatedAsset)));
+    }
+
+    // DeleteAsset deletes an given asset from the world state.
+    async DeleteAsset(ctx, id) {
+        const exists = await this.AssetExists(ctx, id);
+        if (!exists) {
+            throw new Error(`The asset ${id} does not exist`);
+        }
+        return ctx.stub.deleteState(id);
+    }
+
+    // AssetExists returns true when asset with given ID exists in world state.
+    async AssetExists(ctx, id) {
+        const assetJSON = await ctx.stub.getState(id);
+        return assetJSON && assetJSON.length > 0;
+    }
+/**
+ * TRADING: TransferAsset updates the owner field of Rice asset with given id in the world state.
+ * The owner attribute is updated to the new owner
+ */
+    async TransferAsset(ctx, id, newOwner) {
+        const assetString = await this.ReadAsset(ctx, id);
+        const asset = JSON.parse(assetString);
+        asset.Owner = newOwner;
+        return ctx.stub.putState(id, Buffer.from(JSON.stringify(asset)));
+    }
+
+    // GetAllAssets returns all assets found in the world state of the hyper ledger.
+    //Indexes on the ID are used to identify the type of Asset it belongs to
+    async GetAllAssets(ctx) {
+        const allResults = [];
+        // range query with empty string for startKey and endKey does an open-ended query of all assets in the chaincode namespace.
+        const iterator = await ctx.stub.getStateByRange('', '');
+        let result = await iterator.next();
+        while (!result.done) {
+            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+            let record;
+            try {
+                record = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                record = strValue;
+            }
+            allResults.push({ Key: result.value.key, Record: record });
+            result = await iterator.next();
+        }
+        return JSON.stringify(allResults);
+    }
+
+
+}
+
+module.exports = AssetTransfer;
+

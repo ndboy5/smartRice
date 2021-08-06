@@ -94,7 +94,7 @@ async function main() {
 			result = await contract.evaluateTransaction('AssetExists', 'RCE1');
 			console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-			console.log('\n--> Submit Transaction: UpdateAsset asset1, change the appraisedValue to 350');
+			console.log('\n--> Submit Transaction: UpdateAsset asset1, change the quantity left');
 			await contract.submitTransaction('UpdateAsset', 'RCE1', '5', 'Tomoko', 'Kachi Okengwu', 'processing');
 			console.log('*** Result: committed');
 

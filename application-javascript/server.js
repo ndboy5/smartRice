@@ -1,8 +1,16 @@
+/**
+ * The Server Class 
+ * Purpose: Tha API interfacing between the Rice Blockchain Network and end user client Applications
+ * Author: Ifeanyichukwu Deborah Okengwu
+ * Date: July 10th 2021
+ */
+
 'use strict'
 
 const { Gateway, Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
 const path = require('path');
+const cors = require('cors');
 const { buildCAClient, registerAndEnrollUser, enrollAdmin } = require('../../test-application/javascript/CAUtil.js');
 const { buildCCPOrg1, buildWallet } = require('../../test-application/javascript/AppUtil.js');
 const channelName = 'mychannel';
@@ -21,6 +29,8 @@ const { config } = require('process');
 const app = express();
 
 app.use(express.json());
+app.use(cors());
+
 
 const  PORT=5000;
 const ccp = buildCCPOrg1();
@@ -79,13 +89,64 @@ app.post('/api/v1/rice', async (req, res)=>{
 			const result = await contract.submitTransaction('CreateAsset', ''+ rice.ID, ''+ rice.Source_ID, 
 							''+ rice.Size, ''+ rice.Owner, ''+ rice.Rice_Type,''+ rice.Last_owner, ''+ rice.Creation_date, 
 							''+ rice.Last_update_date, ''+ rice.Hist, ''+ rice.Batch_name,''+ rice.State,
-							''+ rice.Status, ''+ rice.Farm_location); 
+							''+ rice.Status, ''+ rice.Farm_location, rice.Transaction_Status, rice.Unit_Price); 
     res.status(200).json({success:true, msg: "submitted succesfully: " + JSON.parse(result.toString()) });
     }
     catch(error){
         console.log(`Get rice Contract Error: ${error}` )
     }
 });
+//Uses the posted Rice ID to find the rice asset from the server
+app.post('/api/v1/rice/check', async (req, res)=>{
+    try{
+ 		const wallet = await buildWallet(Wallets, walletPath);
+        const gateway = new Gateway();
+			await gateway.connect(ccp, {
+				wallet,
+				identity: org1UserId,
+				discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+			});
+
+			// Build a network instance based on the channel where the smart contract is deployed
+			const network = await gateway.getNetwork(channelName);
+
+    		const rice = req.body;
+			// Get the contract from the network.
+			const contract = network.getContract(chaincodeName);
+			const result = await contract.submitTransaction('ReadAsset', ''+ rice.ID );
+    res.status(200).json({success:true, data:  JSON.parse(result.toString()) });
+    }
+    catch(error){
+        console.log(`Get rice Contract Error: ${error}` )
+    }
+});
+
+//To change ownership of Rice 
+app.patch('/api/v1/rice/transfer', async (req, res)=>{
+    try{
+ 		const wallet = await buildWallet(Wallets, walletPath);
+        const gateway = new Gateway();
+			await gateway.connect(ccp, {
+				wallet,
+				identity: org1UserId,
+				discovery: { enabled: true, asLocalhost: true } // using as Localhost as this gateway is using a fabric network deployed locally
+			});
+			// Build a network instance based on the channel where the smart contract is deployed
+			const network = await gateway.getNetwork(channelName);
+    		const rice = req.body;
+    		// const rice = JSON.parse(req.body);
+			console.log(rice);
+			// Get the contract from the network.
+			const contract = network.getContract(chaincodeName);
+			const result = await contract.submitTransaction('TransferAsset', ''+ rice.ID, ''+ rice.newowner,
+			 ''+rice.lastOwner, ''+rice.updateDate); 
+    res.status(200).json({success:true, msg: "submitted succesfully: " + JSON.parse(result.toString()) });
+    }
+    catch(error){
+        console.log(`Get rice Contract Error: ${error}` )
+    }
+});
+
 // Post new account to the blockchain
 app.post('/api/v1/account', async (req, res)=>{
     try{
@@ -109,6 +170,28 @@ app.post('/api/v1/account', async (req, res)=>{
     }
     catch(error){
         console.log(`Get rice Contract Error: ${error}` )
+    }
+});
+
+//To verify account details of a specific account
+app.post('/api/v1/account/login', async (req, res)=>{
+    try{
+ 		const wallet = await buildWallet(Wallets, walletPath);
+        const gateway = new Gateway();
+            
+			await gateway.connect(ccp, {wallet,identity: org1UserId,discovery: { enabled: true, asLocalhost: true } 
+			});
+			// Build a network instance based on the channel(mychannel) where the smart contract is deployed
+			const network = await gateway.getNetwork(channelName);
+			const login = req.body;
+			// Get the contract from the network.
+			const contract = network.getContract(chaincodeName);
+	let result = await contract.evaluateTransaction('ReadAsset', '' + login.ID);
+	//Compare passphrases
+    res.status(200).json({success:true, data: result });
+    }
+    catch(error){
+        console.log(`Find asset Contract Error: ${error}` )
     }
 });
 

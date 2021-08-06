@@ -24,7 +24,6 @@ private static final String PREF_NAME = "AcctPref";
     /** All Shared Preferences Keys*/
     private static final String IS_LOGIN = "isLoggedIn";
     public static final String KEY_NAME = "name";
-    public static final String KEY_PHONE = "phone";
     public  static final String  KEY_ROLE = "role";
     public static final String KEY_ID = "id";
 
@@ -36,16 +35,14 @@ public SessionManager(Context context){
     editor = pref.edit();
 }
 
-    public void createLoginSession(String id, String name, String phone, String role ){
+    public void createLoginSession(String id, String name, String role ){
 
 // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
         //Store other preference keys
         editor.putString(KEY_NAME, name);
-        editor.putString(KEY_PHONE, phone);
         editor.putString(KEY_ID, id);
         editor.putString(KEY_ROLE, role);
-
 // commit changes
         editor.commit();
     }
@@ -54,12 +51,15 @@ public SessionManager(Context context){
         HashMap<String, String> user = new HashMap<String, String>();
 // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-// user email id, id and role
-        user.put(KEY_PHONE, pref.getString(KEY_PHONE, null));
+//user id and role
         user.put(KEY_ID, pref.getString(KEY_ID, null));
         user.put(KEY_ROLE, pref.getString(KEY_ROLE, null));
 // return user
         return user;
+    }
+
+    public String getUserId(){
+    return pref.getString(KEY_NAME, null);
     }
 
     public boolean isLogin(){

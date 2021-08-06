@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.raidify.mobi.smartrice.R;
+import com.raidify.mobi.smartrice.utils.SessionManager;
 
 public class welcome extends Fragment implements View.OnClickListener {
 
@@ -33,6 +34,7 @@ public class welcome extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.welcome_fragment, container, false);
     }
 

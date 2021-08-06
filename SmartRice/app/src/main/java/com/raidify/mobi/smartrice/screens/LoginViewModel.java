@@ -6,11 +6,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.raidify.mobi.smartrice.model.RiceAsset;
+import com.raidify.mobi.smartrice.model.AccountAsset;
 import com.raidify.mobi.smartrice.server.APIServerSingleton;
 import com.raidify.mobi.smartrice.utils.Constants;
 import com.raidify.mobi.smartrice.utils.SessionManager;
@@ -18,39 +20,38 @@ import com.raidify.mobi.smartrice.utils.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AddRiceViewModel extends AndroidViewModel {
-    RiceAsset newAsset = new RiceAsset();
-    private Context context;
+public class LoginViewModel extends AndroidViewModel {
     SessionManager sessionManager;
+    MutableLiveData<JSONObject> userDetails;
+    Context context;
 
-    public AddRiceViewModel(@NonNull Application application) {
+    public LoginViewModel(@NonNull Application application) {
         super(application);
         context = application;
-        sessionManager = new SessionManager(context);
+        sessionManager= new SessionManager(context);
     }
 
-    public void addNewAsset(RiceAsset asset){
-        this.newAsset = asset;
-        sendRiceToServer(asset);
+    public boolean isLoggedIn(){
+        return sessionManager.isLogin();
+
     }
 
-    private void sendRiceToServer(RiceAsset asset){
-        String url = Constants.urlBase + Constants.riceURI;
+
+
+    public MutableLiveData<JSONObject> getAccountDetail() {
+        if (userDetails == null) {
+            userDetails = new MutableLiveData<JSONObject>();
+        }
+        return this.userDetails;
+    }
+
+    public void getAccountDataFromServer(String id, String passPhrase){
+        String url = Constants.urlBase + Constants.accountURI + "/login";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("ID", asset.rice_id);
-            jsonObject.put("Source_ID", asset.source_id);
-            jsonObject.put("Unit_Price", asset.unitP);
-            jsonObject.put("Size", asset.quantity);
-            jsonObject.put("Owner", sessionManager.getUserId() ); //Loads the userID of the user currently logged on
-            jsonObject.put("Rice_Type", asset.riceType);
-            jsonObject.put("Creation_date", asset.creation_date);
-            jsonObject.put("Last_update_date", asset.last_update_date);
-            jsonObject.put("Batch_name", asset.batchName);
-            jsonObject.put("State", asset.state);
-            jsonObject.put("Status", asset.status);
-            jsonObject.put("Farm_location", asset.farm_location);
-            jsonObject.put("Source_ID", asset.source_id);
+            jsonObject.put("ID", id);
+            jsonObject.put("passphrase", passPhrase);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -59,6 +60,11 @@ public class AddRiceViewModel extends AndroidViewModel {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i("ndboy", "SERVER RESPONSE: " + response.toString());
+                        try {
+                            userDetails.postValue(response.getJSONObject("data"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -69,5 +75,13 @@ public class AddRiceViewModel extends AndroidViewModel {
                 });
         //add request to the request queue
         APIServerSingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
-}
+    }
+
+    public void logoutAccount(){
+        sessionManager.logoutUser();
+    }
+
+    public String getSessionName(){
+        return sessionManager.getUserDetails().get("name");
+    }
 }

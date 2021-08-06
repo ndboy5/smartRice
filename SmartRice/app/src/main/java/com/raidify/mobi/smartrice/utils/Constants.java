@@ -20,7 +20,8 @@ public class Constants {
 
     // variables for building URLs
     public static final int port = 5000;
-    public static final String urlBase = "http://172.20.10.4:" + Integer.toString(port) +"/api/v1/";
+    public static final String urlBase = "http://172.20.10.2:" + Integer.toString(port) +"/api/v1/";
+//    public static final String urlBase = "http://172.20.10.4:" + Integer.toString(port) +"/api/v1/";
     public static final String accountURI = "account";
     public static final String riceURI = "rice";
     public static final String checkURI = "rice/check";

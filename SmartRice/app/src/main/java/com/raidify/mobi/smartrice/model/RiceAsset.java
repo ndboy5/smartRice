@@ -10,6 +10,7 @@ public class RiceAsset {
     public String farm_location;
     public String riceType;
     public String status;
+    public Double unitP;
     public String owner;
     public String state;
     public String last_owner;

@@ -13,12 +13,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="70dp"
-        android:text="Buy/Sell Rice"
+        android:text="Trade Rice"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
+        android:id="@+id/tradeDetailsLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
@@ -30,69 +31,291 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:counterEnabled="true"
-
-            android:hint="phone number e.g 07034504131">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/riceIDMText"
-                android:layout_width="match_parent"
-                android:inputType="phone"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp" />
-        </com.google.android.material.textfield.TextInputLayout>
->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <RadioGroup
-                android:id="@+id/riceTypeRadioGroup"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/searchRiceBtn"
+                android:layout_width="wrap_content"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_height="wrap_content"
+                android:text="Find">
+            </Button>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checkedButton="@+id/radio_button_1">
+                app:counterEnabled="true"
+                android:hint="Enter Rice ID">
 
-                <RadioButton
-                    android:id="@+id/long_grainRBtn"
-                    android:checked="true"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/riceIDMText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Long Grain" />
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:layout_margin="6dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <RadioButton
-                    android:id="@+id/ofadaRiceRBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Ofada" />
 
-                <RadioButton
-                    android:id="@+id/brownRiceRBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Brown rice" />
-
-                <RadioButton
-                    android:id="@+id/short_grainRBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Short grain" />
-            </RadioGroup>
         </LinearLayout>
+<LinearLayout
+    android:id="@+id/riceDetailLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-        <Button
-            android:id="@+id/trackRiceBtn"
-            style="?attr/materialButtonOutlinedStyle"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/IDText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="ID:" />
+        <TextView
+            android:id="@+id/IDEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submit" />
-
+            android:text="" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/text56"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Type:" />
+        <TextView
+            android:id="@+id/riceTypeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/ownerText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Owner:" />
+        <TextView
+            android:id="@+id/ownerEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/quantityText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Amount(Kg):" />
+        <TextView
+            android:id="@+id/quantityEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="left">
+    <TextView
+        android:id="@+id/batchNameTText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Batch name:" />
+    <TextView
+        android:id="@+id/batchNameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/Texts"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Farm Location" />
+        <TextView
+            android:id="@+id/farmLOCText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/creationDateText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Harvest Date" />
+        <TextView
+            android:id="@+id/creationDateEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Status:" />
+        <TextView
+            android:id="@+id/statusEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/stateText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Cycle Stage:" />
+        <TextView
+            android:id="@+id/stateEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/unitPriceText"
+            android:layout_width="110dp"
+            android:textColor="@color/teal_700"
+            android:layout_height="wrap_content"
+            android:text="Unit Price(N):" />
+        <TextView
+            android:id="@+id/unitPriceEditText"
+            android:layout_width="wrap_content"
+            android:textColor="@color/teal_700"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="left">
+        <TextView
+            android:id="@+id/transStatusText"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="Transaction State:" />
+        <TextView
+            android:id="@+id/transStatusEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <Button
+              android:id="@+id/allBtn"
+              android:layout_width="wrap_content"
+              style="?attr/materialButtonOutlinedStyle"
+              android:layout_height="wrap_content"
+              android:text="All">
+          </Button>
+
+          <com.google.android.material.textfield.TextInputLayout
+              style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:hint="Buy amount in KG">
+
+              <com.google.android.material.textfield.TextInputEditText
+                  android:id="@+id/buyAmountMText"
+                  android:layout_width="match_parent"
+                  android:inputType="numberDecimal"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="6dp" />
+          </com.google.android.material.textfield.TextInputLayout>
+      </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    >
+
+    <Button
+        android:id="@+id/sellRiceBtn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/purple_custom"
+        android:layout_height="wrap_content"
+        android:text="Sell" />
+    <Button
+        android:id="@+id/releaseRiceBtn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/purple_custom"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="Release" />
+    <Button
+        android:id="@+id/buyRiceBtn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:textColor="@color/purple_custom"
+        android:text="Buy" />
+</LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+        <TextView
+            android:id="@+id/messageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Note: You can only sell or release rice assets you own"/>
+</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

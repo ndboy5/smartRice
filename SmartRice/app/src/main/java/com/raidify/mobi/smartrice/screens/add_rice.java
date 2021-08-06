@@ -28,6 +28,7 @@ public class add_rice extends Fragment {
 
     //UI Component variables
     TextInputEditText idText;
+    TextInputEditText unitPriceMText;
     TextInputEditText quantityText;
     TextInputEditText batchText;
     RadioGroup typeRadioButton;
@@ -53,6 +54,7 @@ public class add_rice extends Fragment {
         mViewModel = new ViewModelProvider(this).get(AddRiceViewModel.class);
 
         idText = getView().findViewById(R.id.riceIDMText);
+        unitPriceMText  = getView().findViewById(R.id.unitPriceMText);
         quantityText = getView().findViewById(R.id.quantiyMText);
         batchText = getView().findViewById(R.id.batchNameText);
         typeRadioButton = getView().findViewById(R.id.riceTypeRadioGroup);
@@ -61,9 +63,7 @@ public class add_rice extends Fragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("ndboy", "Test point reached");
                 //validate the date entered and send to several
-       // if (validateBatchName() && validatePhoneNo() && validateQuantity())
             mViewModel.addNewAsset(getAssetDetails());
                 Toast.makeText(getContext(),"Your rice asset ID is 12321231AB. Make a note of this key or save to device", Toast.LENGTH_SHORT);
             }
@@ -72,7 +72,6 @@ public class add_rice extends Fragment {
     }
 
     private RiceAsset getAssetDetails(){
-
         long currentDate = new Date().getTime();
         // Let upper bound for randomly generated number be used
         Random random = new Random();
@@ -80,7 +79,8 @@ public class add_rice extends Fragment {
 
         newrice.source_id = "-";
         newrice.quantity = Double.valueOf(quantityText.getText().toString());
-        newrice.owner = idText.getText().toString();
+        newrice.unitP = Double.valueOf(unitPriceMText.getText().toString());
+//        newrice.owner = idText.getText().toString();
         newrice.riceType = getSelectedRiceType();
         newrice.last_owner="-";
         newrice.creation_date = currentDate;

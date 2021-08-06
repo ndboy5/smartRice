@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/welcome">
+    app:startDestination="@id/login2">
 
     <fragment
         android:id="@+id/welcome"
@@ -22,9 +22,6 @@
         <action
             android:id="@+id/action_welcome_to_inventory"
             app:destination="@id/inventory" />
-        <action
-            android:id="@+id/action_welcome_to_loginFragment"
-            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/trading"
@@ -35,7 +32,11 @@
         android:id="@+id/check"
         android:name="com.raidify.mobi.smartrice.screens.check"
         android:label="check_fragment"
-        tools:layout="@layout/check_fragment" />
+        tools:layout="@layout/check_fragment" >
+        <action
+            android:id="@+id/action_check_to_trading"
+            app:destination="@id/trading" />
+    </fragment>
     <fragment
         android:id="@+id/registration"
         android:name="com.raidify.mobi.smartrice.screens.registration"
@@ -44,15 +45,6 @@
         <action
             android:id="@+id/action_registration_to_welcome"
             app:destination="@id/welcome" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.raidify.mobi.smartrice.screens.ui.login.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_registration"
-            app:destination="@id/registration" />
     </fragment>
     <fragment
         android:id="@+id/add_rice"
@@ -64,4 +56,16 @@
         android:name="com.raidify.mobi.smartrice.screens.inventory"
         android:label="inventory_fragment"
         tools:layout="@layout/inventory_fragment" />
+    <fragment
+        android:id="@+id/login2"
+        android:name="com.raidify.mobi.smartrice.screens.login"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_login2_to_registration"
+            app:destination="@id/registration" />
+        <action
+            android:id="@+id/action_login2_to_welcome"
+            app:destination="@id/welcome" />
+    </fragment>
 </navigation>
