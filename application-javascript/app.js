@@ -76,16 +76,6 @@ async function main() {
 			let result = await contract.evaluateTransaction('GetAllAssets');
 			console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-			// Now let's try to submit a transaction.
-			// This will be sent to both peers and if both peers endorse the transaction, the endorsed proposal will be sent
-			// to the orderer to be committed by each of the peer's to the channel ledger.
-			console.log('\n--> Submit Transaction: CreateAsset, creates new asset with id, source_id, size, owner, rice_type, lastOwner, creation_date, transaction_date, hist, state, status,batch_name, farm_locationID, color, owner, size, and appraisedValue arguments');
-			result = await contract.submitTransaction('CreateAsset', 'RCE7','-', '40', 'Tom', 'Brown Rice', 'Nduka Okengwu', '123456', '123456','Storage', 'Good' , 'Batch A', '586767');
-			console.log('*** Result: committed');
-			if (`${result}` !== '') {
-				console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-			}
-
 			console.log('\n--> Evaluate Transaction: ReadAsset, function returns an asset with a given assetID');
 			result = await contract.evaluateTransaction('ReadAsset', 'RCE1');
 			console.log(`*** Result: ${prettyJSONString(result.toString())}`);
@@ -94,20 +84,12 @@ async function main() {
 			result = await contract.evaluateTransaction('AssetExists', 'RCE1');
 			console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-			console.log('\n--> Submit Transaction: UpdateAsset asset1, change the quantity left');
-			await contract.submitTransaction('UpdateAsset', 'RCE1', '5', 'Tomoko', 'Kachi Okengwu', 'processing');
-			console.log('*** Result: committed');
-
 			console.log('\n--> Evaluate Transaction: ReadAsset, function returns "asset1" attributes');
 			result = await contract.evaluateTransaction('ReadAsset', 'RCE1');
 			console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 
-			console.log('\n--> Submit Transaction: TransferAsset function RCE2, transfer to new owner Ifeanyichukwu');
-			await contract.submitTransaction('TransferAsset', 'RCE2', 'Ifenyichukwu');
-			console.log('*** Result: committed');
-
-			console.log('\n--> Evaluate Transaction: ReadAsset, function returns "asset1" attributes');
-			result = await contract.evaluateTransaction('ReadAsset', 'asset1');
+			console.log('\n--> Check Farmer initialised in Blockchain');
+			result = await contract.evaluateTransaction('ReadAsset', '');
 			console.log(`*** Result: ${prettyJSONString(result.toString())}`);
 		} finally {
 			// Disconnect from the gateway when the application is closing

@@ -54,6 +54,7 @@ public class login extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        sessionManager = new SessionManager(requireActivity());
         return inflater.inflate(R.layout.login_fragment, container, false);
     }
 
@@ -83,7 +84,7 @@ public class login extends Fragment {
             @Override
             public void onClick(View view) {
                 //Find the user registration details
-                mViewModel.getAccountDataFromServer(userIDText.getText().toString(), generatePassPhrase() );
+                mViewModel.getAccountDataFromServer(userIDText.getText().toString());
             }
         });
 
@@ -170,14 +171,16 @@ public class login extends Fragment {
             public void onChanged(@Nullable final JSONObject jsonObject) {
                 try {
 
-                    if(generatePassPhrase()==jsonObject.getString("Pass_phrase")) {
+                    if(computePassPhrase().equals(jsonObject.getString("Pass_phrase"))) {
                         String id = jsonObject.getString("ID");
                         String name = jsonObject.getString("Name");
                         String midName = jsonObject.getString("Midname");
                         String surname = jsonObject.getString("Surname");
                         String role = jsonObject.getString("Role");
                         sessionManager.createLoginSession(id, name + " " +midName+ ""+ surname, role);
+                        passPhrase = "";
                        Navigation.findNavController(getView()).navigate(R.id.action_login2_to_welcome);
+
                     }
                     else{ // Update message on wrong pass phrase
                        passPhraseMsgText.setText("Wrong user name or pass phrase. Try again");
@@ -191,6 +194,7 @@ public class login extends Fragment {
     }
 
     private String computePassPhrase(){
+        this.passPhrase = "";
         for (String word: passPhraseSet){
             this.passPhrase = this.passPhrase + word;
         }
@@ -200,11 +204,10 @@ public class login extends Fragment {
     private void computePassPhraseEntry(String word){
         if (passPhraseSet.contains(word) ) {
             passPhraseSet.remove(word);
-        } else passPhraseSet.add(word);
+           // this.passPhrase = computePassPhrase();
+        } else {passPhraseSet.add(word);}
+
         this.passPhraseMsgText.setText("Pass Phrase: " + this.computePassPhrase());
-    }
-    private String generatePassPhrase(){
-        return "";
     }
 
 }

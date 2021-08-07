@@ -55,7 +55,11 @@
         android:id="@+id/inventory"
         android:name="com.raidify.mobi.smartrice.screens.inventory"
         android:label="inventory_fragment"
-        tools:layout="@layout/inventory_fragment" />
+        tools:layout="@layout/inventory_fragment" >
+        <action
+            android:id="@+id/action_inventory_to_inventoryDetail"
+            app:destination="@id/inventoryDetail" />
+    </fragment>
     <fragment
         android:id="@+id/login2"
         android:name="com.raidify.mobi.smartrice.screens.login"
@@ -68,4 +72,9 @@
             android:id="@+id/action_login2_to_welcome"
             app:destination="@id/welcome" />
     </fragment>
+    <fragment
+        android:id="@+id/inventoryDetail"
+        android:name="com.raidify.mobi.smartrice.screens.InventoryDetail"
+        android:label="inventory_detail_fragment"
+        tools:layout="@layout/inventory_detail_fragment" />
 </navigation>

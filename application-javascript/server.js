@@ -64,7 +64,69 @@ app.get('/api/v1/rice', async (req, res)=>{
     }
 });
 
-//Posts a new asset from client to the block chain
+//Gets all open rice assets (i.e rice on the blockchain with transaction status 'Open')
+app.get('/api/v1/rice/open', async (req, res)=>{
+    try{
+ 		const wallet = await buildWallet(Wallets, walletPath);
+        const gateway = new Gateway();
+            
+			await gateway.connect(ccp, {
+				wallet,
+				identity: org1UserId,
+				discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+			});
+
+			// Build a network instance based on the channel where the smart contract is deployed
+			const network = await gateway.getNetwork(channelName);
+
+			// Get the contract from the network.
+			const contract = network.getContract(chaincodeName);
+    let result = await contract.evaluateTransaction('GetAllAssets');
+	//filter assets to get only OPEN rice assets
+	result = JSON.parse(result.toString()).filter(rice =>{
+		rice.ID.substring(0,2)=="RCE";
+	}).filter(rice =>{ rice.Transaction_Status=="Open"});
+	//Log the 
+	console.log(result);
+    res.status(200).json({success:true, data: result }); 
+    }
+    catch(error){
+        console.log(`Get Open Rice assets Error: ${error}` )
+    }
+});
+
+//Gets all Rice assets belonging to a particular owner
+app.get('/api/v1/rice/owner/:id', async (req, res)=>{
+    try{
+ 		const wallet = await buildWallet(Wallets, walletPath);
+        const gateway = new Gateway();
+            
+			await gateway.connect(ccp, {
+				wallet,
+				identity: org1UserId,
+				discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+			});
+
+			// Build a network instance based on the channel where the smart contract is deployed
+			const network = await gateway.getNetwork(channelName);
+
+			// Get the contract from the network.
+			const contract = network.getContract(chaincodeName);
+    let result = await contract.evaluateTransaction('GetAllAssets');
+	//filter assets to get only OPEN rice assets
+	result = JSON.parse(result.toString()).filter(rice =>{
+		rice.ID.substring(0,2)=="RCE";
+	}).filter(rice =>{ rice.Owner==req.params.id});
+	//Log the 
+	console.log(result);
+    res.status(200).json({success:true, data: result });
+    }
+    catch(error){
+        console.log(`Get Open Rice assets Error: ${error}` )
+    }
+});
+
+//Posts a new rice asset from client to the block chain
 app.post('/api/v1/rice', async (req, res)=>{
     try{
  		const wallet = await buildWallet(Wallets, walletPath);
@@ -140,7 +202,7 @@ app.patch('/api/v1/rice/transfer', async (req, res)=>{
 			const contract = network.getContract(chaincodeName);
 			const result = await contract.submitTransaction('TransferAsset', ''+ rice.ID, ''+ rice.newowner,
 			 ''+rice.lastOwner, ''+rice.updateDate); 
-    res.status(200).json({success:true, msg: "submitted succesfully: " + JSON.parse(result.toString()) });
+    res.status(200).json({success:true, msg: "Transfered succesfully: " + JSON.parse(result.toString()) });
     }
     catch(error){
         console.log(`Get rice Contract Error: ${error}` )
@@ -174,7 +236,7 @@ app.post('/api/v1/account', async (req, res)=>{
 });
 
 //To verify account details of a specific account
-app.post('/api/v1/account/login', async (req, res)=>{
+app.get('/api/v1/account/login/:id', async (req, res)=>{ //the password may also be added to the String as well or validated on the client
     try{
  		const wallet = await buildWallet(Wallets, walletPath);
         const gateway = new Gateway();
@@ -183,11 +245,13 @@ app.post('/api/v1/account/login', async (req, res)=>{
 			});
 			// Build a network instance based on the channel(mychannel) where the smart contract is deployed
 			const network = await gateway.getNetwork(channelName);
-			const login = req.body;
+		
 			// Get the contract from the network.
 			const contract = network.getContract(chaincodeName);
-	let result = await contract.evaluateTransaction('ReadAsset', '' + login.ID);
+	let result = await contract.evaluateTransaction('ReadAsset', '' + req.params.id);
 	//Compare passphrases
+	result = JSON.parse(result.toString())
+	console.log(result)
     res.status(200).json({success:true, data: result });
     }
     catch(error){

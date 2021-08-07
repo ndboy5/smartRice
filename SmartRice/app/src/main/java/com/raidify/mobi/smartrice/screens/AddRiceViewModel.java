@@ -51,6 +51,7 @@ public class AddRiceViewModel extends AndroidViewModel {
             jsonObject.put("Status", asset.status);
             jsonObject.put("Farm_location", asset.farm_location);
             jsonObject.put("Source_ID", asset.source_id);
+            jsonObject.put("Transaction_Status", "Open"); //Default is open for all new harvest
         } catch (JSONException e) {
             e.printStackTrace();
         }

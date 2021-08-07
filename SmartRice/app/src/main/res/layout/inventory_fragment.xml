@@ -4,10 +4,132 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".screens.inventory">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/inventoryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rice Inventory"
+            android:textSize="24sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="left">
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Owner's ID">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchRiceMText"
+            android:layout_width="90dp"
+            android:inputType="numberDecimal"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/searchRiceBtn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="6dp"
+        android:text="Search"
+        android:textColor="@color/purple_custom"
+        android:textStyle="bold" />
+</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right">
+            <Button
+                android:id="@+id/findOpenRiceBtn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:textColor="@color/purple_custom"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="Available Rice" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/riceIdHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ID" />
+
+        <TextView
+            android:id="@+id/ownerHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Owner" />
+
+        <TextView
+            android:id="@+id/quantityHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Quantity" />
+
+        <TextView
+            android:id="@+id/unitPHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Unit Price(N)" />
+
+        <TextView
+            android:id="@+id/harvestDateHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Date" />
+
+        <TextView
+            android:id="@+id/tStatusHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Status" />
+
+        <TextView
+            android:id="@+id/riceStateHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Condition" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/riceRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>
 </FrameLayout>

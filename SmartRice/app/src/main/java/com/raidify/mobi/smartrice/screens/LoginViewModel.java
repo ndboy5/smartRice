@@ -45,17 +45,9 @@ public class LoginViewModel extends AndroidViewModel {
         return this.userDetails;
     }
 
-    public void getAccountDataFromServer(String id, String passPhrase){
-        String url = Constants.urlBase + Constants.accountURI + "/login";
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("ID", id);
-            jsonObject.put("passphrase", passPhrase);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.ACTION_POST, url, jsonObject,
+    public void getAccountDataFromServer(String id){
+        String url = Constants.urlBase + Constants.accountURI + "/login/" + id;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.ACTION_GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

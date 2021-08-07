@@ -14,6 +14,7 @@ npm install
 
 See https://github.com/protobufjs/protobuf.js/issues/877
 
+# sudo apt install build-essential
 
 #---------------------------------------------------
 # Trakees-server-master
