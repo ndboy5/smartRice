@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_welcome_to_inventory"
             app:destination="@id/inventory" />
+        <action
+            android:id="@+id/action_welcome_to_login2"
+            app:destination="@id/login2" />
     </fragment>
     <fragment
         android:id="@+id/trading"
@@ -50,7 +53,11 @@
         android:id="@+id/add_rice"
         android:name="com.raidify.mobi.smartrice.screens.add_rice"
         android:label="add_rice_fragment"
-        tools:layout="@layout/add_rice_fragment" />
+        tools:layout="@layout/add_rice_fragment" >
+        <action
+            android:id="@+id/action_add_rice_to_welcome"
+            app:destination="@id/welcome" />
+    </fragment>
     <fragment
         android:id="@+id/inventory"
         android:name="com.raidify.mobi.smartrice.screens.inventory"
@@ -76,5 +83,9 @@
         android:id="@+id/inventoryDetail"
         android:name="com.raidify.mobi.smartrice.screens.InventoryDetail"
         android:label="inventory_detail_fragment"
-        tools:layout="@layout/inventory_detail_fragment" />
+        tools:layout="@layout/inventory_detail_fragment" >
+        <action
+            android:id="@+id/action_inventoryDetail_to_inventory"
+            app:destination="@id/inventory" />
+    </fragment>
 </navigation>

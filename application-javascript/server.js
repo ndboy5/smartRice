@@ -83,9 +83,10 @@ app.get('/api/v1/rice/open', async (req, res)=>{
 			const contract = network.getContract(chaincodeName);
     let result = await contract.evaluateTransaction('GetAllAssets');
 	//filter assets to get only OPEN rice assets
-	result = JSON.parse(result.toString()).filter(rice =>{
-		rice.ID.substring(0,2)=="RCE";
-	}).filter(rice =>{ rice.Transaction_Status=="Open"});
+	// result = JSON.parse(result.toString());
+	result = JSON.parse(result.toString()).filter(entry=>{
+		return entry.Key.substring(0,3)==="RCE" && entry.Record.Transaction_Status==="open"
+	})
 	//Log the 
 	console.log(result);
     res.status(200).json({success:true, data: result }); 
@@ -115,8 +116,8 @@ app.get('/api/v1/rice/owner/:id', async (req, res)=>{
     let result = await contract.evaluateTransaction('GetAllAssets');
 	//filter assets to get only OPEN rice assets
 	result = JSON.parse(result.toString()).filter(rice =>{
-		rice.ID.substring(0,2)=="RCE";
-	}).filter(rice =>{ rice.Owner==req.params.id});
+		return entry.Key.substring(0,3)==="RCE" && entry.Record.Owner===req.params.id
+	});
 	//Log the 
 	console.log(result);
     res.status(200).json({success:true, data: result });
@@ -228,6 +229,8 @@ app.post('/api/v1/account', async (req, res)=>{
 			const result = await contract.submitTransaction('CreateAccount', ''+ account.ID, ''+ account.Name, 
 							''+ account.Midname, ''+account.Surname, ''+ account.Role, ''+account.Pass_phrase,
 							''+account.Location, ''+account.Creation_date); 
+	
+							console.log(JSON.parse(result.toString()));
     res.status(200).json({success:true, msg: "submitted succesfully: " + result });
     }
     catch(error){

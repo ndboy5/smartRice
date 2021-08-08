@@ -44,7 +44,7 @@ public class login extends Fragment {
 
     Set<String> passPhraseSet = new HashSet<String>();
     private String[] passPhraseString = new String[] {"School", "Computer","Garri", "Oshodi", "Yam", "Tractor",
-            "Cutlass", "Effurun", "Basket", "Mature"};
+            "Cutlass", "Effurun", "Bag", "Mature"};
 
     SessionManager sessionManager;
     public static login newInstance() {

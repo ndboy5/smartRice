@@ -41,7 +41,6 @@ public class TradingViewModel extends AndroidViewModel {
         return this.riceDetail;
     }
 
-
     public void getRiceDetailById(String rice_id) {
         String url = Constants.urlBase + Constants.riceURI + "/check";
         JSONObject jsonObject = new JSONObject();
@@ -73,19 +72,97 @@ public class TradingViewModel extends AndroidViewModel {
         APIServerSingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
     }
 
+    public void sellRice(){
+        String url = Constants.urlBase + Constants.riceURI;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("ID",this.riceDetail.getValue().getString("ID") );
+            jsonObject.put("Source_ID", this.riceDetail.getValue().getString("Source_ID"));
+            jsonObject.put("Size", this.riceDetail.getValue().getString("Size"));
+            jsonObject.put("Last_owner", this.riceDetail.getValue().getString("Last_owner"));
+            jsonObject.put("Owner", this.riceDetail.getValue().getString("Owner")); //TODO: Owner ID should come from the session manager
+            jsonObject.put("Rice_Type", this.riceDetail.getValue().getString("Rice_Type"));
+            jsonObject.put("Creation_date", this.riceDetail.getValue().getString("Creation_date"));
+            jsonObject.put("Last_update_date", new Date().getTime());
+            jsonObject.put("Batch_name", this.riceDetail.getValue().getString("Batch_name"));
+            jsonObject.put("State", this.riceDetail.getValue().getString("State"));
+            jsonObject.put("Status", this.riceDetail.getValue().getString("Status"));
+            jsonObject.put("Farm_location", this.riceDetail.getValue().getString("Farm_location"));
+            jsonObject.put("Transaction_Status", "open");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.ACTION_POST, url, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("ndboy", "SERVER RESPONSE: " + response.toString());
+                        riceDetail.postValue(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("ndboy", "SERVER ERROR: " + error.toString());
+                    }
+                });
+        //add request to the request queue
+        APIServerSingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void releaseRice(){
+
+        String url = Constants.urlBase + Constants.riceURI;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("ID",this.riceDetail.getValue().getString("ID") );
+            jsonObject.put("Source_ID", this.riceDetail.getValue().getString("Source_ID"));
+            jsonObject.put("Size", this.riceDetail.getValue().getString("Size"));
+            jsonObject.put("Last_owner", this.riceDetail.getValue().getString("Last_owner"));
+            jsonObject.put("Owner", this.riceDetail.getValue().getString("Owner")); //TODO: Owner ID should come from the session manager
+            jsonObject.put("Rice_Type", this.riceDetail.getValue().getString("Rice_Type"));
+            jsonObject.put("Creation_date", this.riceDetail.getValue().getString("Creation_date"));
+            jsonObject.put("Last_update_date", new Date().getTime());
+            jsonObject.put("Batch_name", this.riceDetail.getValue().getString("Batch_name"));
+            jsonObject.put("State", this.riceDetail.getValue().getString("State"));
+            jsonObject.put("Status", this.riceDetail.getValue().getString("Status"));
+            jsonObject.put("Farm_location", this.riceDetail.getValue().getString("Farm_location"));
+            jsonObject.put("Transaction_Status", "closed");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.ACTION_POST, url, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("ndboy", "SERVER RESPONSE: " + response.toString());
+                        riceDetail.postValue(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("ndboy", "SERVER ERROR: " + error.toString());
+                    }
+                });
+        //add request to the request queue
+        APIServerSingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
+    }
+
     /**
      * To buy a portion and not the entire Asset quantity
-     * @param ownerId
+     * @param newOwnerId
      * @param portion
      */
-    public void buyRicePortion(String newAssetID, String ownerId, Double portion){
+    public void buyRicePortion(String newAssetID, String newOwnerId, Double portion){
         String url = Constants.urlBase + Constants.riceURI;
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("ID",newAssetID );
             jsonObject.put("Source_ID", this.riceDetail.getValue().getString("ID"));
             jsonObject.put("Size", portion);
-            jsonObject.put("Owner", ownerId); //TODO: Owner ID should come from the session manager
+            jsonObject.put("Last_owner", this.riceDetail.getValue().getString("Owner"));
+            jsonObject.put("Owner", newOwnerId); //TODO: Owner ID should come from the session manager
             jsonObject.put("Rice_Type", this.riceDetail.getValue().getString("Rice_Type"));
             jsonObject.put("Creation_date", new Date().getTime());
             jsonObject.put("Last_update_date", new Date().getTime());
@@ -93,7 +170,7 @@ public class TradingViewModel extends AndroidViewModel {
             jsonObject.put("State", this.riceDetail.getValue().getString("State"));
             jsonObject.put("Status", this.riceDetail.getValue().getString("Status"));
             jsonObject.put("Farm_location", this.riceDetail.getValue().getString("Farm_Location"));
-            jsonObject.put("Transaction_Status", "Closed");
+            jsonObject.put("Transaction_Status", "pending");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -117,22 +194,61 @@ public class TradingViewModel extends AndroidViewModel {
 
     public void buyRiceAll(String ownerId){
         try {
-            transferRiceOwnership(this.riceDetail.getValue().getString("Owner"), sessionManager.getUserId());
+            transferRiceOwnership(this.riceDetail.getValue().getString("Owner"), sessionManager.getUserId(), "pending");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    //To change the ownership of a given Rice asset
-    private void transferRiceOwnership(String formerOwner, String newOwner){
+    public void decreaseQuantityOfSourceAsset(Double newQuantity){
+        String url = Constants.urlBase + Constants.riceURI;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("ID",this.riceDetail.getValue().getString("ID") );
+            jsonObject.put("Source_ID", this.riceDetail.getValue().getString("Source_ID"));
+            jsonObject.put("Size", newQuantity);
+            jsonObject.put("Last_owner", this.riceDetail.getValue().getString("Last_owner"));
+            jsonObject.put("Owner", this.riceDetail.getValue().getString("Owner")); //TODO: Owner ID should come from the session manager
+            jsonObject.put("Rice_Type", this.riceDetail.getValue().getString("Rice_Type"));
+            jsonObject.put("Creation_date", this.riceDetail.getValue().getString("Creation_date"));
+            jsonObject.put("Last_update_date", new Date().getTime());
+            jsonObject.put("Batch_name", this.riceDetail.getValue().getString("Batch_name"));
+            jsonObject.put("State", this.riceDetail.getValue().getString("State"));
+            jsonObject.put("Status", this.riceDetail.getValue().getString("Status"));
+            jsonObject.put("Farm_location", this.riceDetail.getValue().getString("Farm_location"));
+            jsonObject.put("Transaction_Status", "pending");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.ACTION_POST, url, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("ndboy", "SERVER RESPONSE: " + response.toString());
+                        riceDetail.postValue(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("ndboy", "SERVER ERROR: " + error.toString());
+                    }
+                });
+        //add request to the request queue
+        APIServerSingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
+    }
 
-        String url = Constants.urlBase + Constants.riceURI ;
+    //To change the ownership of a given Rice asset
+    private void transferRiceOwnership(String formerOwner, String newOwner, String transaction_status){
+
+        String url = Constants.urlBase + Constants.riceURI + "/transfer";
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("ID", this.riceDetail.getValue().getString("ID"));
             jsonObject.put("newOwner", newOwner);
             jsonObject.put("lastOwner", formerOwner);
             jsonObject.put("updateDate", new Date().getTime());
+            jsonObject.put("transaction_status", transaction_status);
         } catch (JSONException e) {
             e.printStackTrace();
         }

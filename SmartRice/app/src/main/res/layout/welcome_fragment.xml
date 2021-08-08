@@ -12,9 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="100dp"
-        android:text="My options"
-        android:textSize="30sp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="cursive"
+        android:text="SmartRice Options"
+        android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,16 +23,16 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:gravity="center_horizontal"
-        android:layout_marginTop="160dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/newRiceCard"
-            android:layout_width="154dp"
-            android:layout_height="166dp"
-            android:layout_margin="8dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_margin="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,8 +48,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="add newly harvested rice"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@mipmap/ic_new_rice" />
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@mipmap/ic_new_rice3" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -77,9 +78,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/tradeCard"
-            android:layout_width="154dp"
-            android:layout_height="166dp"
-            android:layout_margin="8dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_margin="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="shop for rice"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     app:srcCompat="@mipmap/ic_trade_rice" />
 
                 <LinearLayout
@@ -135,9 +136,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/inventoryCard"
-            android:layout_width="154dp"
-            android:layout_height="166dp"
-            android:layout_margin="8dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_margin="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -153,8 +154,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="add newly harvested rice"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@mipmap/ic_shop_rice" />
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@mipmap/ic_inventory_rice" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -183,9 +184,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/trackRiceCard"
-            android:layout_width="154dp"
-            android:layout_height="166dp"
-            android:layout_margin="8dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_margin="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -201,7 +202,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="see rice history"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     app:srcCompat="@mipmap/ic_track_rice" />
 
                 <LinearLayout
@@ -229,4 +230,17 @@
 
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/signOutBtn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="105dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="SIGN OUT"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

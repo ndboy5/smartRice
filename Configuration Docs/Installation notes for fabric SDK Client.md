@@ -9,8 +9,14 @@ internal/modules/cjs/loader.js:584
 
 
 # The only way to clear the error is to run the following command in that folder and the execute npm install once again
+sudo apt install build-essential
+
+# rm -R node_modules
+# rm package-lock.json
+
 npm install --unsafe-perm
 npm install
+
 
 See https://github.com/protobufjs/protobuf.js/issues/877
 
@@ -32,7 +38,7 @@ npm install
 # to address the eslint error, edit the package.json file to remove all the eslint packages
 vi package.json
 # delete the package-lock.json file and the node_modules folder
-rm node_modules
+rm -R node_modules
 rm package-lock.json
 # install the dependencies again
 npm install

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.raidify.mobi.smartrice.R;
 import com.raidify.mobi.smartrice.utils.SessionManager;
@@ -26,6 +27,7 @@ public class welcome extends Fragment implements View.OnClickListener {
     private MaterialCardView tradeRiceCard;
     private MaterialCardView inventoryCard;
     private MaterialCardView trackRiceCard;
+    private MaterialButton signOutBtn;
 
     public static welcome newInstance() {
         return new welcome();
@@ -48,11 +50,13 @@ public class welcome extends Fragment implements View.OnClickListener {
         tradeRiceCard = getView().findViewById(R.id.tradeCard);
         inventoryCard = getView().findViewById(R.id.inventoryCard);
         trackRiceCard = getView().findViewById(R.id.trackRiceCard);
+        signOutBtn = getView().findViewById(R.id.signOutBtn);
 
        newRiceCard.setOnClickListener(this);
         trackRiceCard.setOnClickListener(this);
         tradeRiceCard.setOnClickListener(this);
         inventoryCard.setOnClickListener(this);
+        signOutBtn.setOnClickListener(this);
 
     }
 
@@ -74,6 +78,11 @@ public class welcome extends Fragment implements View.OnClickListener {
             case R.id.trackRiceCard:
                 //
                 Navigation.findNavController(view).navigate(R.id.action_welcome_to_check);
+                break;
+            case R.id.signOutBtn:
+                SessionManager sessionManager = new SessionManager(requireActivity());
+                sessionManager.logoutUser();
+                Navigation.findNavController(view).navigate(R.id.action_welcome_to_login2);
                 break;
         }
     }

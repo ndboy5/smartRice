@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="24dp"
             android:text="Personal Profile"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -130,13 +130,14 @@
             android:id="@+id/passPhraseText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:text="Select your secret pass phrase. Please note it and keep it safe"
             android:textSize="16sp"
             />
         <com.google.android.material.chip.ChipGroup
             android:layout_height="wrap_content"
             android:id="@+id/passPhraseChipGroup"
+            android:layout_margin="8dp"
             android:layout_width="match_parent">
         <com.google.android.material.chip.Chip
             android:id="@+id/chip0"
@@ -199,7 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="Basket"/>
+                android:text="Bag"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip9"
@@ -215,6 +216,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
+            android:layout_margin="8dp"
             />
 
     </LinearLayout>

@@ -16,7 +16,7 @@ class AssetTransfer extends Contract {
             ID: 'RCE1',
             Source_ID:'-',
             Size: 5,
-            Owner: 'Tochukwu Okengwu',
+            Owner: 'FMR09000000000',
             Rice_Type: "Ofada",
             Last_owner: "",
             Creation_date: 78998977,
@@ -25,7 +25,7 @@ class AssetTransfer extends Contract {
             Batch_name: 'Batch A',
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
-            Farm_location: 9999898,
+            Farm_location: 'Effurun Farms, Okwokoko, Delta State',
             Transaction_Status:'open',
             Unit_Price: '100'
             },
@@ -34,7 +34,7 @@ class AssetTransfer extends Contract {
             {
                 ID: 'RCE2',
                 Size: 5,
-                Owner: 'Garba Sule',
+            Owner: 'FMR09000000000',
             Last_owner: "Tochukwu Okengwu",
              Rice_Type: "Ofada",
             Source_ID:'-',
@@ -44,14 +44,14 @@ class AssetTransfer extends Contract {
             Batch_name: 'Batch B',
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
-            Farm_location: 9999898,
+            Farm_location: 'Isingwu Farms, Osa, Umuahia, Nigeria',
             Transaction_Status:'open',
             Unit_Price: '100'
             },
             {
                 ID: 'RCE3',
                 Size: 10,
-                Owner: 'Garba Sule',
+            Owner: 'FMR09000000000',
             Last_owner: "Jerry Gana",
              Rice_Type: "Long Grain",
             Source_ID:'-',
@@ -61,14 +61,14 @@ class AssetTransfer extends Contract {
             Batch_name: 'Batch B',
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
-            Farm_location: 9999898,
+            Farm_location: 'Isingwu Farms, Osa, Umuahia, Nigeria',
             Transaction_Status:'open',
             Unit_Price: '150'
             },
             {
                 ID: 'RCE4',
                 Size: 10,
-                Owner: 'Max',
+            Owner: 'FMR09000000000',
             Last_owner: "Garba Babayaro",
              Rice_Type: "Ofada",
             Source_ID:'-',
@@ -78,14 +78,14 @@ class AssetTransfer extends Contract {
             Batch_name: 'Batch C',
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
-            Farm_location: 9999898,
+            Farm_location: 'Sule Farms, Babagana Village, Iwela, Abuja',
             Transaction_Status:'open',
             Unit_Price: ''
             },
             {
                 ID: 'RCE5',
                 Size: 15,
-                Owner: 'Adriana',
+            Owner: 'FMR09000000000',
             Last_owner: "Tochukwu Okengwu",
              Rice_Type: "Brown Rice",
             Source_ID:'-',
@@ -95,14 +95,14 @@ class AssetTransfer extends Contract {
             Batch_name: 'Batch D',
             State: 'harvested',
             Status:'Fresh', //Expired, fresh ,Good etc
-            Farm_location: 9999898,
+            Farm_location: 'Sule Farms, Babagana Village, Iwela, Abuja',
             Transaction_Status:'open',
             Unit_Price: '120'
             },
             {
                 ID: 'RCE6',
                 Size: 15,
-                Owner: 'Tunde',
+            Owner: 'FMR09000000000',
             Last_owner: "Ariochi Okengwu",
              Rice_Type: "Ofada",
             Source_ID:'-',
@@ -112,8 +112,8 @@ class AssetTransfer extends Contract {
             Batch_name: 'Batch A',
             State: 'processed',
             Status:'Expired', //Expired, fresh ,Good etc
-            Farm_location: 9999898,
-            Transaction_Status:'open',
+            Farm_location: 'Area 8,Garban Keffi, Mando Road, Kaduna',
+            Transaction_Status:'closed',
             Unit_Price: '100'
             },
         ];

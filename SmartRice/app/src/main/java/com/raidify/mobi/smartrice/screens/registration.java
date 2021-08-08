@@ -53,7 +53,7 @@ public class registration extends Fragment {
 
     Set<String> passPhraseSet = new HashSet<String>();
     private String[] passPhraseString = new String[] {"School", "Computer","Garri", "Oshodi", "Yam", "Tractor",
-                                                        "Cutlass", "Effurun", "Basket", "Mature"};
+                                                        "Cutlass", "Effurun", "Bag", "Mature"};
     String phrase = "";
     public static registration newInstance() {
         return new registration();
@@ -95,12 +95,11 @@ public class registration extends Fragment {
                 if(isValidEntry()) {
                     mViewModel.sendAccountDetailsToNetwork(newAccount);
                     Toast.makeText(getContext(), "Your new account ID is : " + newAccount.ID +
-                            " and your pass phrase: " + phrase, Toast.LENGTH_LONG );
+                            " and your pass phrase: " + phrase, Toast.LENGTH_LONG ).show();
                     Navigation.findNavController(getView()).navigate(R.id.action_registration_to_welcome);
                 } else {
-                    Toast.makeText(getContext(), "Kindly enter the fields correctly", Toast.LENGTH_SHORT);
+                    Toast.makeText(getContext(), "Kindly enter the account details correctly", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 

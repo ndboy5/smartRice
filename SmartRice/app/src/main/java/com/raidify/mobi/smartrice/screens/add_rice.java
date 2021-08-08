@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class add_rice extends Fragment {
     TextInputEditText unitPriceMText;
     TextInputEditText quantityText;
     TextInputEditText batchText;
+    TextInputEditText farmLocationText;
     RadioGroup typeRadioButton;
 
     MaterialButton submitBtn;
@@ -57,15 +59,17 @@ public class add_rice extends Fragment {
         unitPriceMText  = getView().findViewById(R.id.unitPriceMText);
         quantityText = getView().findViewById(R.id.quantiyMText);
         batchText = getView().findViewById(R.id.batchNameText);
+        farmLocationText = getView().findViewById(R.id.locationMText);
         typeRadioButton = getView().findViewById(R.id.riceTypeRadioGroup);
         submitBtn = getView().findViewById(R.id.trackRiceBtn);
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //validate the date entered and send to several
+                //validate the date entered and send to server
             mViewModel.addNewAsset(getAssetDetails());
-                Toast.makeText(getContext(),"Your rice asset ID is 12321231AB. Make a note of this key or save to device", Toast.LENGTH_SHORT);
+            Toast.makeText(getContext(),"Rice ID is " + newrice.rice_id +". Keep safe", Toast.LENGTH_LONG).show();
+            Navigation.findNavController(view).navigate(R.id.action_add_rice_to_welcome);
             }
         });
 
@@ -88,7 +92,7 @@ public class add_rice extends Fragment {
         newrice.batchName = batchText.getText().toString();
         newrice.state = "harvested";
         newrice.status = "fresh";
-        newrice.farm_location = "221432";
+        newrice.farm_location = farmLocationText.getText().toString(); //TODO: Try using google play foreground Location Service
 
         return this.newrice;
     }

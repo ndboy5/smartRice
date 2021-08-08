@@ -23,21 +23,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 <LinearLayout
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:gravity="left">
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Owner's ID">
+        android:hint="Enter Owner's ID">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchRiceMText"
-            android:layout_width="90dp"
-            android:inputType="numberDecimal"
+            android:layout_width="200dp"
+            android:inputType="textCapWords"
             android:layout_height="wrap_content"
             android:layout_margin="6dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -54,7 +55,7 @@
 </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right">
             <Button
@@ -66,7 +67,7 @@
                 android:textColor="@color/purple_custom"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="Available Rice" />
+                android:text="View Rice For Sale" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -78,6 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
             android:text="ID" />
 
         <TextView
@@ -85,6 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
             android:text="Owner" />
 
         <TextView
@@ -92,6 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
             android:text="Quantity" />
 
         <TextView
@@ -99,6 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
             android:text="Unit Price(N)" />
 
         <TextView
@@ -106,6 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
             android:text="Date" />
 
         <TextView
@@ -113,6 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
             android:text="Status" />
 
         <TextView
@@ -120,6 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
             android:text="Condition" />
     </LinearLayout>
     <LinearLayout

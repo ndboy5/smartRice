@@ -15,6 +15,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.raidify.mobi.smartrice.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class RiceInventoryAdapter extends RecyclerView.Adapter<RiceInventoryAdapter.ViewHolder> {
 
 LiveData<JSONArray> riceAssetList;
@@ -72,7 +76,17 @@ LiveData<JSONArray> riceAssetList;
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         //Position starts from zero
         try {
-            holder.getRiceId().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getString("ID"));
+            holder.getRiceId().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getString("Key"));
+            holder.getOwner().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getJSONObject("Record").getString("Owner"));
+            holder.getQuantity().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getJSONObject("Record").getString("Size"));
+            long val = 1346524199000l;
+            Date date=new Date(Long.valueOf(riceAssetList.getValue().getJSONObject(position).getJSONObject("Record").getString("Creation_date")));
+            SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yy");
+            String dateText = df2.format(date);
+            holder.getHarvestDate().setText(dateText);
+            holder.getUnitP().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getJSONObject("Record").getString("Unit_Price"));
+            holder.getState().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getJSONObject("Record").getString("State"));
+            holder.getTransactionStatus().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getJSONObject("Record").getString("Transaction_Status"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
