@@ -262,4 +262,28 @@ app.get('/api/v1/account/login/:id', async (req, res)=>{ //the password may also
     }
 });
 
+//To verify account details of a specific account
+app.get('/api/v1/rice/track/:id', async (req, res)=>{ //the password may also be added to the String as well or validated on the client
+    try{
+ 		const wallet = await buildWallet(Wallets, walletPath);
+        const gateway = new Gateway();
+            
+			await gateway.connect(ccp, {wallet,identity: org1UserId,discovery: { enabled: true, asLocalhost: true } 
+			});
+			// Build a network instance based on the channel(mychannel) where the smart contract is deployed
+			const network = await gateway.getNetwork(channelName);
+		
+			// Get the contract from the network.
+			const contract = network.getContract(chaincodeName);
+	let result = await contract.evaluateTransaction('GetAssetHistory', '' + req.params.id);
+	//Compare passphrases
+	result = JSON.parse(result.toString())
+	console.log(result)
+    res.status(200).json({success:true, data: result });
+    }
+    catch(error){
+        console.log(`Find asset Contract Error: ${error}` )
+    }
+});
+
 app.listen(PORT, console.log(`The app is listening on ${PORT}`))

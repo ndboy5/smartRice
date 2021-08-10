@@ -21,11 +21,11 @@ public class Constants {
     // variables for building URLs
     public static final int port = 5000;
     //Ify's Laptop's IP address
-//    public static final String urlBase = "http://192.168.43.204:" + Integer.toString(port) +"/api/v1/";
+    public static final String urlBase = "http://192.168.43.204:" + Integer.toString(port) +"/api/v1/";
    //Remote server's IP Address
 //    public static final String urlBase = "http://143.198.164.186:" + Integer.toString(port) +"/api/v1/";
     //My laptop urls
-    public static final String urlBase = "http://172.20.10.2:" + Integer.toString(port) +"/api/v1/";
+//    public static final String urlBase = "http://172.20.10.2:" + Integer.toString(port) +"/api/v1/";
 //    public static final String urlBase = "http://172.20.10.4:" + Integer.toString(port) +"/api/v1/";
     public static final String accountURI = "account";
     public static final String riceURI = "rice";
