@@ -204,7 +204,6 @@ public class login extends Fragment {
     private void computePassPhraseEntry(String word){
         if (passPhraseSet.contains(word) ) {
             passPhraseSet.remove(word);
-           // this.passPhrase = computePassPhrase();
         } else {passPhraseSet.add(word);}
 
         this.passPhraseMsgText.setText("Pass Phrase: " + this.computePassPhrase());

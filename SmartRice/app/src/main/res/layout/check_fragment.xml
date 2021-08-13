@@ -24,13 +24,12 @@
     android:layout_height="wrap_content"
     android:hint="Enter Package ID">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/riceIDMText"
-        android:layout_width="match_parent"
-        android:inputType="number"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-         />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/riceIDMText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:inputType="number" />
 </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -40,6 +39,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Track" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_margin="6dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/ownerHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="Owner   " />
+
+        <TextView
+            android:id="@+id/quantityHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="Quantity" />
+
+        <TextView
+            android:id="@+id/unitPHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="Unit Price(N)" />
+
+        <TextView
+            android:id="@+id/harvestDateHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="Date" />
+
+        <TextView
+            android:id="@+id/tStatusHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="Status" />
+
+        <TextView
+            android:id="@+id/riceStateHText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="Condition" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

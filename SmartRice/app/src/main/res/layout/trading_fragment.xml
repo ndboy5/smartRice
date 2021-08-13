@@ -192,6 +192,7 @@
         <TextView
             android:id="@+id/statusEditText"
             android:layout_width="wrap_content"
+            android:textColor="@color/red"
             android:layout_height="wrap_content"
             android:text="" />
     </LinearLayout>
@@ -220,13 +221,12 @@
         <TextView
             android:id="@+id/unitPriceText"
             android:layout_width="110dp"
-            android:textColor="@color/teal_700"
             android:layout_height="wrap_content"
             android:text="Unit Price(N):" />
         <TextView
             android:id="@+id/unitPriceEditText"
             android:layout_width="wrap_content"
-            android:textColor="@color/teal_700"
+            android:textColor="@color/red"
             android:layout_height="wrap_content"
             android:text="" />
     </LinearLayout>
@@ -236,11 +236,12 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:gravity="left">
+
         <TextView
             android:id="@+id/transStatusText"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:text="Transaction State:" />
+            android:text="Transaction Status:" />
         <TextView
             android:id="@+id/transStatusEditText"
             android:layout_width="wrap_content"

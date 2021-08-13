@@ -18,6 +18,8 @@ import com.raidify.mobi.smartrice.utils.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Console;
+
 public class AddRiceViewModel extends AndroidViewModel {
     RiceAsset newAsset = new RiceAsset();
     private Context context;
@@ -26,7 +28,7 @@ public class AddRiceViewModel extends AndroidViewModel {
     public AddRiceViewModel(@NonNull Application application) {
         super(application);
         context = application;
-        sessionManager = new SessionManager(context);
+        sessionManager = new SessionManager(application);
     }
 
     public void addNewAsset(RiceAsset asset){
@@ -71,4 +73,10 @@ public class AddRiceViewModel extends AndroidViewModel {
         //add request to the request queue
         APIServerSingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
 }
+
+    public boolean isAuthorisedToAddRice(){
+       if(sessionManager.getUserId().substring(0,3).equals(Constants.FARMER_ID_PREFIX)) return true;
+//        Log.i("ndboy", "substring=" + sessionManager.getUserId().substring(0,3));
+        return false;
+    }
 }

@@ -200,23 +200,23 @@ public class TradingViewModel extends AndroidViewModel {
         }
     }
 
-    public void decreaseQuantityOfSourceAsset(Double newQuantity){
+    public void decreaseQuantityOfSourceAsset(RiceAsset riceAsset, Double newQuantity){
         String url = Constants.urlBase + Constants.riceURI;
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("ID",this.riceDetail.getValue().getString("ID") );
-            jsonObject.put("Source_ID", this.riceDetail.getValue().getString("Source_ID"));
+            jsonObject.put("ID",riceAsset.rice_id);
+            jsonObject.put("Source_ID",riceAsset.source_id);
             jsonObject.put("Size", newQuantity);
-            jsonObject.put("Last_owner", this.riceDetail.getValue().getString("Last_owner"));
-            jsonObject.put("Owner", this.riceDetail.getValue().getString("Owner")); //TODO: Owner ID should come from the session manager
-            jsonObject.put("Rice_Type", this.riceDetail.getValue().getString("Rice_Type"));
-            jsonObject.put("Creation_date", this.riceDetail.getValue().getString("Creation_date"));
+            jsonObject.put("Last_owner", riceAsset.last_owner);
+            jsonObject.put("Owner", riceAsset.owner); //TODO: Owner ID should come from the session manager
+            jsonObject.put("Rice_Type", riceAsset.riceType);
+            jsonObject.put("Creation_date", riceAsset.creation_date);
             jsonObject.put("Last_update_date", new Date().getTime());
-            jsonObject.put("Batch_name", this.riceDetail.getValue().getString("Batch_name"));
-            jsonObject.put("State", this.riceDetail.getValue().getString("State"));
-            jsonObject.put("Status", this.riceDetail.getValue().getString("Status"));
-            jsonObject.put("Farm_location", this.riceDetail.getValue().getString("Farm_location"));
-            jsonObject.put("Transaction_Status", "pending");
+            jsonObject.put("Batch_name", riceAsset.batchName);
+            jsonObject.put("State", riceAsset.state);
+            jsonObject.put("Status", riceAsset.status);
+            jsonObject.put("Farm_location", riceAsset.farm_location);
+            jsonObject.put("Transaction_Status", riceAsset.trans_status);
         } catch (JSONException e) {
             e.printStackTrace();
         }

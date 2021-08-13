@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.raidify.mobi.smartrice.R;
+import com.raidify.mobi.smartrice.model.RiceAsset;
 import com.raidify.mobi.smartrice.utils.Constants;
 import com.raidify.mobi.smartrice.utils.SessionManager;
 
@@ -51,6 +52,7 @@ public class trading extends Fragment {
 
     private TradingViewModel mViewModel;
     SessionManager sessionManager;
+    RiceAsset sourceRiceAsset = new RiceAsset();
 
     public static trading newInstance() {
         return new trading();
@@ -87,7 +89,6 @@ public class trading extends Fragment {
         transStateText = getView().findViewById(R.id.transStatusEditText);
 
        riceDetailLayout = getView().findViewById(R.id.riceDetailLayout);
-//       riceDetailLayout.setVisibility(View.INVISIBLE);
        findBtn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
@@ -103,13 +104,27 @@ public class trading extends Fragment {
 
                 if(sellQuantity>0 && isAuthorisedToBuy()){ //to handle less than zero quantities
                         if(buyQuantity<sellQuantity) {
+                            //Save the source asset details before update
+                            saveSourceRiceAssetDetails();
                         //Create new asset and save on server
                         Random rand = new Random();
                         String newID = Constants.RICE_ID_PREFIX + String.valueOf(rand.nextInt(Constants.RANDOM_NUM_UPPER_BOUND));
                         mViewModel.buyRicePortion(newID, sessionManager.getUserId(), buyQuantity);
+                        Toast.makeText(getContext(), "Rice with the new ID: " + newID
+
+                                + " pending release by seller", Toast.LENGTH_LONG).show();
                             //TODO: Decrement the quantity of the former asset here
-                        mViewModel.decreaseQuantityOfSourceAsset(sellQuantity - buyQuantity);
-                    } else if(buyQuantity.equals(sellQuantity)) { mViewModel.buyRiceAll(sessionManager.getUserId());}
+                        mViewModel.decreaseQuantityOfSourceAsset(sourceRiceAsset,  sellQuantity - buyQuantity);
+
+                    } else if(buyQuantity.equals(sellQuantity)) {
+                            mViewModel.buyRiceAll(sessionManager.getUserId());
+                            try {
+                                Toast.makeText(getContext(), "Rice " + mViewModel.getRiceDetail().getValue().getString("ID")
+                                        + " pending release by seller", Toast.LENGTH_SHORT).show();
+                            } catch (JSONException jsonException) {
+                                jsonException.printStackTrace();
+                            }
+                        }
                     else{
                         Toast.makeText(getContext(),"Please review your buy quantity", Toast.LENGTH_SHORT).show();
                     }
@@ -121,9 +136,15 @@ public class trading extends Fragment {
         sellBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewModel.getRiceDetailById(riceIDText.getText().toString());
+                mViewModel.getRiceDetailById(Constants.RICE_ID_PREFIX +riceIDText.getText().toString());
                 if(isAuthorisedToSell()){
                     mViewModel.sellRice();
+                    try {
+                        Toast.makeText(getContext(), "Rice " + mViewModel.getRiceDetail().getValue().getString("ID")
+                                + " opened for sale", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException jsonException) {
+                        jsonException.printStackTrace();
+                    }
                 }
             }
         });
@@ -132,9 +153,15 @@ public class trading extends Fragment {
         releaseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewModel.getRiceDetailById(riceIDText.getText().toString());
+                mViewModel.getRiceDetailById(Constants.RICE_ID_PREFIX +riceIDText.getText().toString());
                 if(isAuthorisedToRelease()){
                     mViewModel.releaseRice();
+                    try {
+                        Toast.makeText(getContext(), "Rice " + mViewModel.getRiceDetail().getValue().getString("ID")
+                                + " released to buyer", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException jsonException) {
+                        jsonException.printStackTrace();
+                    }
                 }
             }
         });
@@ -208,6 +235,27 @@ public class trading extends Fragment {
         if (trans_status.equals("pending") && last_owner.equals(sessionManager.getUserId())) return true;
         Toast.makeText(getContext(), "You are not authorised to release this Rice", Toast.LENGTH_SHORT).show();
         return false;
+    }
+
+    private void saveSourceRiceAssetDetails(){
+       JSONObject  riceJSONData = mViewModel.getRiceDetail().getValue();
+        try {
+            this.sourceRiceAsset.rice_id = riceJSONData.getString("ID");
+            this.sourceRiceAsset.source_id = riceJSONData.getString("Source_ID");
+            this.sourceRiceAsset.batchName = riceJSONData.getString("Batch_name");
+            this.sourceRiceAsset.creation_date = Long.valueOf(riceJSONData.getString("Creation_date"));
+            this.sourceRiceAsset.owner= riceJSONData.getString("Owner");
+            this.sourceRiceAsset.last_owner= riceJSONData.getString("Last_owner");
+            this.sourceRiceAsset.riceType= riceJSONData.getString("Rice_Type");
+            this.sourceRiceAsset.farm_location= riceJSONData.getString("Farm_location");
+            this.sourceRiceAsset.last_update_date = Long.valueOf(riceJSONData.getString("Last_update_date"));
+            this.sourceRiceAsset.state= riceJSONData.getString("State");
+            this.sourceRiceAsset.status= riceJSONData.getString("Status");
+            this.sourceRiceAsset.trans_status= riceJSONData.getString("Transaction_Status");
+            this.sourceRiceAsset.unitP = Double.valueOf(riceJSONData.getString("Unit_Price"));
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
     }
 
 

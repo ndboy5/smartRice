@@ -11,24 +11,23 @@ import androidx.lifecycle.LiveData;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.raidify.mobi.smartrice.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import com.raidify.mobi.smartrice.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class RiceInventoryAdapter extends RecyclerView.Adapter<RiceInventoryAdapter.ViewHolder> {
+public class RiceHistoryAdapter extends RecyclerView.Adapter<RiceHistoryAdapter.ViewHolder> {
 
 LiveData<JSONArray> riceAssetList;
     //Constructor to accept data. Remember to modify to suit answer sheet
-    public RiceInventoryAdapter(LiveData<JSONArray> riceList) {
+    public RiceHistoryAdapter(LiveData<JSONArray> riceList) {
         this.riceAssetList = riceList;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView riceId;
         private TextView owner;
         private TextView quantity;
         private TextView unitP;
@@ -47,7 +46,6 @@ LiveData<JSONArray> riceAssetList;
                     Navigation.findNavController(view).navigate(R.id.action_inventory_to_inventoryDetail, bundle);
                 }
             });
-            riceId = (TextView) itemView.findViewById(R.id.riceIdRowText);
             owner = (TextView) itemView.findViewById(R.id.ownerRowText);
             quantity = (TextView) itemView.findViewById(R.id.quantityRowText);
             unitP = (TextView) itemView.findViewById(R.id.unitPRowText);
@@ -56,7 +54,6 @@ LiveData<JSONArray> riceAssetList;
              state = (TextView) itemView.findViewById(R.id.riceStateRowText);
         }
         //create public interface for binding the attributes
-        public TextView getRiceId(){ return this.riceId;}
         public TextView getOwner(){ return this.owner;}
         public TextView getQuantity(){ return this.quantity;}
         public TextView getUnitP(){ return this.unitP;}
@@ -68,7 +65,7 @@ LiveData<JSONArray> riceAssetList;
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.rice_row_item, parent,false);
+        View v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.rice_history_item, parent,false);
         return new ViewHolder(v);
     }
 
@@ -76,7 +73,6 @@ LiveData<JSONArray> riceAssetList;
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         //Position starts from zero
         try {
-            holder.getRiceId().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getString("Key"));
             holder.getOwner().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getJSONObject("Record").getString("Owner"));
             holder.getQuantity().setText((CharSequence) riceAssetList.getValue().getJSONObject(position).getJSONObject("Record").getString("Size"));
             Date date=new Date(Long.valueOf(riceAssetList.getValue().getJSONObject(position).getJSONObject("Record").getString("Creation_date")));

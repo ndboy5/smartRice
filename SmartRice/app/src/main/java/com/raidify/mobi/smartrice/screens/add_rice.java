@@ -66,10 +66,16 @@ public class add_rice extends Fragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //validate the date entered and send to server
+                if(!mViewModel.isAuthorisedToAddRice()){
+                    Toast.makeText(getContext(),"Only farmers are authorised to add new rice harvest", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             mViewModel.addNewAsset(getAssetDetails());
-            Toast.makeText(getContext(),"Rice ID is " + newrice.rice_id +". Keep safe", Toast.LENGTH_LONG).show();
-            Navigation.findNavController(view).navigate(R.id.action_add_rice_to_welcome);
+                //validate the data entered and send to server
+                if(isValidQuantity() && isValidUnitPrice()) {
+                    Toast.makeText(getContext(), "Rice ID is " + newrice.rice_id + ". Keep safe", Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(view).navigate(R.id.action_add_rice_to_welcome);
+                }
             }
         });
 
@@ -84,7 +90,6 @@ public class add_rice extends Fragment {
         newrice.source_id = "-";
         newrice.quantity = Double.valueOf(quantityText.getText().toString());
         newrice.unitP = Double.valueOf(unitPriceMText.getText().toString());
-//        newrice.owner = idText.getText().toString();
         newrice.riceType = getSelectedRiceType();
         newrice.last_owner="-";
         newrice.creation_date = currentDate;
@@ -114,16 +119,17 @@ public class add_rice extends Fragment {
         }
     }
 
-    private boolean validatePhoneNo(){
+    private boolean isValidUnitPrice(){
         //TODO: Validate the user phone number / ID
-        return true;
+       if(Math.abs(newrice.unitP) > Math.abs(0.0) ) return true;
+       Toast.makeText(getContext(), "Kindly enter a valid unit price", Toast.LENGTH_SHORT).show();
+        return false;
     }
-    private boolean validateQuantity(){
+    private boolean isValidQuantity(){
         //TODO: Validate the  asset's Quantity
-        return true;
+        if(Math.abs(newrice.quantity) > Math.abs(0.0) ) return true;
+        Toast.makeText(getContext(), "Kindly enter a valid rice quantity", Toast.LENGTH_SHORT).show();
+        return false;
     }
-    private boolean validateBatchName(){
-        //TODO: Validate the asset's Batch name
-        return true;
-    }
+
 }

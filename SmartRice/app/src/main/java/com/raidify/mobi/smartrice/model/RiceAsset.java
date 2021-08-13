@@ -16,4 +16,5 @@ public class RiceAsset {
     public String last_owner;
     public Long creation_date;
     public Long last_update_date;
+    public String trans_status;
 }

@@ -1,0 +1,16 @@
+# from the test-network folder, shutdown any existing running code or docker containers
+./network.sh down
+
+# from the test-network folder, startup the network on a new channel
+./network.sh up createChannel -ca
+
+# from the test-network folder, deploy the chaincode into the peers
+./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-javascript/ -ccl javascript
+
+# navigate to the applications-javascript folder, delete any existing security wallet
+rm -R wallet
+
+#from the application-javascript folder start the app.js and server.js files
+node app.js
+node server.js
+

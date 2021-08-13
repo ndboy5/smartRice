@@ -59,7 +59,7 @@ public SessionManager(Context context){
     }
 
     public String getUserId(){
-    return pref.getString(KEY_NAME, null);
+    return pref.getString(KEY_ID, null);
     }
 
     public boolean isLogin(){

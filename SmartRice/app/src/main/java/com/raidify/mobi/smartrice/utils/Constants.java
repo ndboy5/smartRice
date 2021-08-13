@@ -25,8 +25,9 @@ public class Constants {
    //Remote server's IP Address
 //    public static final String urlBase = "http://143.198.164.186:" + Integer.toString(port) +"/api/v1/";
     //My laptop urls
-//    public static final String urlBase = "http://172.20.10.2:" + Integer.toString(port) +"/api/v1/";
+//   public static final String urlBase = "http://172.20.10.2:" + Integer.toString(port) +"/api/v1/";
 //    public static final String urlBase = "http://172.20.10.4:" + Integer.toString(port) +"/api/v1/";
+
     public static final String accountURI = "account";
     public static final String riceURI = "rice";
     public static final String checkURI = "rice/check";

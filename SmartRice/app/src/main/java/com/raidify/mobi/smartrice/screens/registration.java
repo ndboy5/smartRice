@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +24,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.raidify.mobi.smartrice.R;
 import com.raidify.mobi.smartrice.model.AccountAsset;
 import com.raidify.mobi.smartrice.utils.Constants;
+import com.raidify.mobi.smartrice.utils.SessionManager;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -50,6 +50,7 @@ public class registration extends Fragment {
 
     AccountAsset newAccount = new AccountAsset();
     private RegistrationViewModel mViewModel;
+    SessionManager sessionManager;
 
     Set<String> passPhraseSet = new HashSet<String>();
     private String[] passPhraseString = new String[] {"School", "Computer","Garri", "Oshodi", "Yam", "Tractor",
@@ -62,6 +63,7 @@ public class registration extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        sessionManager = new SessionManager(requireActivity());
         return inflater.inflate(R.layout.registration_fragment, container, false);
     }
 
@@ -94,11 +96,15 @@ public class registration extends Fragment {
             //validate data and send to blockchain
                 if(isValidEntry()) {
                     mViewModel.sendAccountDetailsToNetwork(newAccount);
-                    Toast.makeText(getContext(), "Your new account ID is : " + newAccount.ID +
-                            " and your pass phrase: " + phrase, Toast.LENGTH_LONG ).show();
+                    sessionManager.createLoginSession(newAccount.ID, newAccount.firstName + " " + newAccount.midName+
+                            " "+ newAccount.surname, newAccount.role);
+                    Toast toast = Toast.makeText(getContext(), "Your new account ID is : " + newAccount.ID +
+                            " and your pass phrase: " + phrase, Toast.LENGTH_LONG );
+                    toast.show();
                     Navigation.findNavController(getView()).navigate(R.id.action_registration_to_welcome);
                 } else {
-                    Toast.makeText(getContext(), "Kindly enter the account details correctly", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(getContext(), "Kindly enter the account details correctly", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         });
@@ -190,6 +196,7 @@ public class registration extends Fragment {
     }
 
     private String computePassPhrase(){
+        this.phrase = "";
         for (String word: passPhraseSet){
             this.phrase = this.phrase + word;
         }
@@ -226,17 +233,20 @@ public class registration extends Fragment {
         //Check for phone number string length
         int phoneNoLength = accountIDEditText.getText().toString().length();
         if (phoneNoLength < 11 || phoneNoLength >= 16) {
-            Toast.makeText(getContext(), "Kindly enter a valid phone number", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), "Kindly enter a valid phone number", Toast.LENGTH_SHORT);
+            toast.show();
             return false;
         }
         if (nameEditText.getText().toString().length() < 1 || surnameEditText.getText().toString().length() < 1) {
 
-            Toast.makeText(getContext(), "Kindly enter a valid name and surname", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), "Kindly enter a valid name and surname", Toast.LENGTH_SHORT);
+            toast.show();
             return false;
         }
         //Validate the pass phrase
        if(this.phrase.length()<3){
-           Toast.makeText(getContext(), "Kindly choose and note your pass-phrase", Toast.LENGTH_SHORT);
+           Toast toast = Toast.makeText(getContext(), "Kindly choose and note your pass-phrase", Toast.LENGTH_SHORT);
+           toast.show();
            return false;
        }
         return true;
