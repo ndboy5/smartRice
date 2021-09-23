@@ -18,16 +18,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="48dp"
-        android:backgroundTint="@color/red"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="76dp"
+        android:backgroundTint="@color/teal_700"
         android:text="Sign In"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passPhraseChipGroup" />
+
+    <Button
+        android:id="@+id/trackRiceByIDBtn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/red"
+        android:text="Track Rice"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/passPhraseMesgText"
@@ -138,19 +150,16 @@
 
     <Button
         android:id="@+id/registerBtn"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginStart="44dp"
         android:backgroundTint="@color/teal_700"
-        android:textColor="@color/white"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_marginBottom="32dp"
         android:text="Register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/loginBtn"
+        app:layout_constraintStart_toEndOf="@+id/loginBtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

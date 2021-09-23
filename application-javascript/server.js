@@ -53,9 +53,14 @@ app.get('/api/v1/rice', async (req, res)=>{
 			// Get the contract from the network.
 			const contract = network.getContract(chaincodeName);
     let result = await contract.evaluateTransaction('GetAllAssets');
+
+	//test print to screen. FOR DELETE
+	console.log(result.toString());
+
 	//filter assets to get only rice assets
 	result = JSON.parse(result.toString()).filter(rice =>{
-		rice.ID.substring(0,2)=="RCE";
+//		rice.ID.substring(0,2)=="RCE";
+		return rice.Key.substring(0,3)==="RCE"; 
 	})
     res.status(200).json({success:true, data: result }); //Same cases may require that the JSON data be parsed twice
     }

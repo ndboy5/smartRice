@@ -49,6 +49,7 @@ public class check extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(CheckViewModel.class);
+        getView().setBackgroundColor(getResources().getColor(R.color.background));
         trackRiceIdText = getView().findViewById(R.id.riceIDMText);
         trackBtn = getView().findViewById(R.id.trackRiceBtn);
         riceHistoryRecyclerView = getView().findViewById(R.id.trackRecyclerView);

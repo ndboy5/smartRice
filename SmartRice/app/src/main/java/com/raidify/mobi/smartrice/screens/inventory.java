@@ -46,6 +46,7 @@ public class inventory extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
+        getView().setBackgroundColor(getResources().getColor(R.color.background));
         //locate UI components
         searchOwnerMText = getView().findViewById(R.id.searchRiceMText);
         searchBtn = getView().findViewById(R.id.searchRiceBtn);

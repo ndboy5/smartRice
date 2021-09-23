@@ -71,6 +71,7 @@ public class registration extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(RegistrationViewModel.class);
+        getView().setBackgroundColor(getResources().getColor(R.color.background));
         accountIDEditText = getView().findViewById(R.id.accountIDMText);
         nameEditText = getView().findViewById(R.id.nameMText);
         surnameEditText = getView().findViewById(R.id.surnameMText);

@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_login2_to_welcome"
             app:destination="@id/welcome" />
+        <action
+            android:id="@+id/action_login2_to_check"
+            app:destination="@id/check" />
     </fragment>
     <fragment
         android:id="@+id/inventoryDetail"

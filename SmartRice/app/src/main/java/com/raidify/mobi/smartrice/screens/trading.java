@@ -69,6 +69,7 @@ public class trading extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(TradingViewModel.class);
+        getView().setBackgroundColor(getResources().getColor(R.color.background));
         findBtn = getView().findViewById(R.id.searchRiceBtn);
         allBtn = getView().findViewById(R.id.allBtn);
         sellBtn = getView().findViewById(R.id.signOutBtn);

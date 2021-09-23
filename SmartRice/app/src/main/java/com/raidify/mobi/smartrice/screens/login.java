@@ -3,6 +3,7 @@ package com.raidify.mobi.smartrice.screens;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class login extends Fragment {
     private EditText userIDText;
     private Button signInBtn;
     private Button registerBtn;
+    private Button trackBtn;
     private String passPhrase = "";
     private TextView passPhraseMsgText;
 
@@ -65,6 +67,8 @@ public class login extends Fragment {
     //  automatically navigate to welcome screen if already logged on
         if(mViewModel.isLoggedIn()) Navigation.findNavController(getView()).navigate(R.id.action_login2_to_welcome);
 
+        getView().setBackgroundColor(getResources().getColor(R.color.background));
+
         chip0 = getView().findViewById(R.id.chip0);
         chip1 = getView().findViewById(R.id.chip1);
         chip2 = getView().findViewById(R.id.chip2);
@@ -78,6 +82,7 @@ public class login extends Fragment {
         userIDText = getView().findViewById(R.id.username);
         signInBtn = getView().findViewById(R.id.loginBtn);
         registerBtn = getView().findViewById(R.id.registerBtn);
+        trackBtn = getView().findViewById(R.id.trackRiceByIDBtn);
         passPhraseMsgText = getView().findViewById(R.id.passPhraseMesgText);
 
         signInBtn.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +93,13 @@ public class login extends Fragment {
             }
         });
 
+        trackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Navigate to Rice tracking screen
+                Navigation.findNavController(getView()).navigate(R.id.action_login2_to_check);
+            }
+        });
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

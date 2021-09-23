@@ -1,0 +1,8 @@
+Dockstation installation on Ubuntu
+-----------------------------------
+https://www.techrepublic.com/article/how-to-install-and-use-dockstation-for-easy-container-builds/
+Note: I ran only as the root user after following the installation instructions.
+	Hence, after installation, the dockstation can be started by using the following command as root
+	$ dockstation
+
+
