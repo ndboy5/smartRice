@@ -206,8 +206,8 @@ app.patch('/api/v1/rice/transfer', async (req, res)=>{
 			console.log(rice);
 			// Get the contract from the network.
 			const contract = network.getContract(chaincodeName);
-			const result = await contract.submitTransaction('TransferAsset', ''+ rice.ID, ''+ rice.newowner,
-			 ''+rice.lastOwner, ''+rice.updateDate); 
+			const result = await contract.submitTransaction('TransferAsset', ''+ rice.ID, ''+ rice.newOwner,
+			 ''+rice.lastOwner,rice.transaction_status, ''+rice.updateDate); 
     res.status(200).json({success:true, msg: "Transfered succesfully: " + JSON.parse(result.toString()) });
     }
     catch(error){

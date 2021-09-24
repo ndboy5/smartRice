@@ -204,12 +204,11 @@ class AssetTransfer extends Contract {
     }
 
     // TransferAsset updates the owner field of asset with given id in the world state.
-    async TransferAsset(ctx, id, newOwner, lastOwner, transaction_status, updateDate) {
+    async TransferAsset(ctx, id, newOwner, lastOwner, updateDate) {
         const assetString = await this.ReadAsset(ctx, id);
         const asset = JSON.parse(assetString);
         asset.Owner = newOwner;
         asset.Last_owner = lastOwner;
-	asset.Transaction_Status = transaction_status;
         asset.Last_update_date = updateDate;
         return ctx.stub.putState(id, Buffer.from(JSON.stringify(asset)));
     }
